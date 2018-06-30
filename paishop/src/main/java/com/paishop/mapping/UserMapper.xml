@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paishop.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.paishop.entity.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="unionid" property="unionid" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="detail_address" property="detailAddress" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <collection property="orderList"
+                             ofType="com.paishop.entity.Order"
+                             select="findAllOrderByUser"
+                             column="id"/>
+    <collection property="auctionList"
+                             ofType="com.paishop.entity.Auction"
+                             select="findAuctionInfoByUserId"
+                             column="id"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, openid, unionid, nickname, gender, city, province, country, avatar_url, telphone, 
+    detail_address, create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findAllOrderByUser" resultType="com.paishop.entity.Order" parameterType="java.lang.Integer" >
+    select id, p_id, u_id, market_price, buy_price, o_status, o_address, o_spec, user_remark, 
+    o_express, express_fee, u_comment, affer_sale_type, after_sale_status, o_createtime, o_modifytime 
+    from t_order 
+    where u_id = #{id,jdbcType=INTEGER} 
+    limit #{offset},#{pageSize}
+  </select>
+  
+  <select id="findAuctionInfoByUserId" resultType="com.paishop.entity.Auction" parameterType="java.lang.Integer" >
+    select id, p_id, u_id, auction_uv, aution_pv, auction_stage, auction_price, status, auction_name, 
+    p_price, start_time, auction_time, end_time, create_time 
+    from t_auction 
+    where u_id = #{id,jdbcType=INTEGER} 
+    limit #{offset},#{pageSize}
+  </select>
+  <select id="selectAllUser" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user  
+    limit #{offset},#{pageSize}
+  </select>
+  <select id="selectAllUserByName" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from t_user  
+    limit #{offset},#{pageSize}
+    
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paishop.entity.User" >
+    insert into t_user (id, openid, unionid, 
+      nicknae, gender, city, 
+      province, country, avatar_url, 
+      telphone, detail_address, create_time, 
+      modify_time)
+    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{unionid,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
+      #{province,jdbcType=INTEGER}, #{country,jdbcType=INTEGER}, #{avatarUrl,jdbcType=VARCHAR}, 
+      #{telphone,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.paishop.entity.User" >
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="unionid != null" >
+        unionid,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url,
+      </if>
+      <if test="telphone != null" >
+        telphone,
+      </if>
+      <if test="detailAddress != null" >
+        detail_address,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="unionid != null" >
+        #{unionid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=INTEGER},
+      </if>
+      <if test="avatarUrl != null" >
+        #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="detailAddress != null" >
+        #{detailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.paishop.entity.User" >
+    update t_user
+    <set >
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="unionid != null" >
+        unionid = #{unionid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=INTEGER},
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="detailAddress != null" >
+        detail_address = #{detailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paishop.entity.User" >
+    update t_user
+    set openid = #{openid,jdbcType=VARCHAR},
+      unionid = #{unionid,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      province = #{province,jdbcType=INTEGER},
+      country = #{country,jdbcType=INTEGER},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      detail_address = #{detailAddress,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

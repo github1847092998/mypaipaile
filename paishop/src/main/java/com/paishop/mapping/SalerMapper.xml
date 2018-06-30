@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paishop.dao.SalerMapper" >
+  <resultMap id="BaseResultMap" type="com.paishop.entity.Saler" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="s_username" property="sUsername" jdbcType="VARCHAR" />
+    <result column="s_password" property="sPassword" jdbcType="VARCHAR" />
+    <result column="s_telephone" property="sTelephone" jdbcType="VARCHAR" />
+    <result column="s_email" property="sEmail" jdbcType="VARCHAR" />
+    <result column="s_address" property="sAddress" jdbcType="VARCHAR" />
+    <result column="s_money" property="sMoney" jdbcType="REAL" />
+    <result column="express_temple" property="expressTemple" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, s_username, s_password, s_telephone, s_email, s_address, s_money, express_temple, 
+    create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_saler
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_saler
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paishop.entity.Saler" >
+    insert into t_saler (id, s_username, s_password, 
+      s_telephone, s_email, s_address, 
+      s_money, express_temple, create_time, 
+      modify_time)
+    values (#{id,jdbcType=INTEGER}, #{sUsername,jdbcType=VARCHAR}, #{sPassword,jdbcType=VARCHAR}, 
+      #{sTelephone,jdbcType=VARCHAR}, #{sEmail,jdbcType=VARCHAR}, #{sAddress,jdbcType=VARCHAR}, 
+      #{sMoney,jdbcType=REAL}, #{expressTemple,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.paishop.entity.Saler" >
+    insert into t_saler
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sUsername != null" >
+        s_username,
+      </if>
+      <if test="sPassword != null" >
+        s_password,
+      </if>
+      <if test="sTelephone != null" >
+        s_telephone,
+      </if>
+      <if test="sEmail != null" >
+        s_email,
+      </if>
+      <if test="sAddress != null" >
+        s_address,
+      </if>
+      <if test="sMoney != null" >
+        s_money,
+      </if>
+      <if test="expressTemple != null" >
+        express_temple,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sUsername != null" >
+        #{sUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="sPassword != null" >
+        #{sPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="sTelephone != null" >
+        #{sTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="sEmail != null" >
+        #{sEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sAddress != null" >
+        #{sAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sMoney != null" >
+        #{sMoney,jdbcType=REAL},
+      </if>
+      <if test="expressTemple != null" >
+        #{expressTemple,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.paishop.entity.Saler" >
+    update t_saler
+    <set >
+      <if test="sUsername != null" >
+        s_username = #{sUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="sPassword != null" >
+        s_password = #{sPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="sTelephone != null" >
+        s_telephone = #{sTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="sEmail != null" >
+        s_email = #{sEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sAddress != null" >
+        s_address = #{sAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sMoney != null" >
+        s_money = #{sMoney,jdbcType=REAL},
+      </if>
+      <if test="expressTemple != null" >
+        express_temple = #{expressTemple,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paishop.entity.Saler" >
+    update t_saler
+    set s_username = #{sUsername,jdbcType=VARCHAR},
+      s_password = #{sPassword,jdbcType=VARCHAR},
+      s_telephone = #{sTelephone,jdbcType=VARCHAR},
+      s_email = #{sEmail,jdbcType=VARCHAR},
+      s_address = #{sAddress,jdbcType=VARCHAR},
+      s_money = #{sMoney,jdbcType=REAL},
+      express_temple = #{expressTemple,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

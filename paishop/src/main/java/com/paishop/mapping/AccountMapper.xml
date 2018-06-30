@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paishop.dao.AccountMapper" >
+  <resultMap id="BaseResultMap" type="com.paishop.entity.Account" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="s_id" property="sId" jdbcType="INTEGER" />
+    <result column="o_id" property="oId" jdbcType="INTEGER" />
+    <result column="ac_money" property="acMoney" jdbcType="REAL" />
+    <result column="ac_status" property="acStatus" jdbcType="INTEGER" />
+    <result column="ac_type" property="acType" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="ac_time" property="acTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, s_id, o_id, ac_money, ac_status, ac_type, remark, ac_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paishop.entity.Account" >
+    insert into t_account (id, s_id, o_id, 
+      ac_money, ac_status, ac_type, 
+      remark, ac_time)
+    values (#{id,jdbcType=INTEGER}, #{sId,jdbcType=INTEGER}, #{oId,jdbcType=INTEGER}, 
+      #{acMoney,jdbcType=REAL}, #{acStatus,jdbcType=INTEGER}, #{acType,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{acTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.paishop.entity.Account" >
+    insert into t_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sId != null" >
+        s_id,
+      </if>
+      <if test="oId != null" >
+        o_id,
+      </if>
+      <if test="acMoney != null" >
+        ac_money,
+      </if>
+      <if test="acStatus != null" >
+        ac_status,
+      </if>
+      <if test="acType != null" >
+        ac_type,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="acTime != null" >
+        ac_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sId != null" >
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="oId != null" >
+        #{oId,jdbcType=INTEGER},
+      </if>
+      <if test="acMoney != null" >
+        #{acMoney,jdbcType=REAL},
+      </if>
+      <if test="acStatus != null" >
+        #{acStatus,jdbcType=INTEGER},
+      </if>
+      <if test="acType != null" >
+        #{acType,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="acTime != null" >
+        #{acTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.paishop.entity.Account" >
+    update t_account
+    <set >
+      <if test="sId != null" >
+        s_id = #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="oId != null" >
+        o_id = #{oId,jdbcType=INTEGER},
+      </if>
+      <if test="acMoney != null" >
+        ac_money = #{acMoney,jdbcType=REAL},
+      </if>
+      <if test="acStatus != null" >
+        ac_status = #{acStatus,jdbcType=INTEGER},
+      </if>
+      <if test="acType != null" >
+        ac_type = #{acType,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="acTime != null" >
+        ac_time = #{acTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paishop.entity.Account" >
+    update t_account
+    set s_id = #{sId,jdbcType=INTEGER},
+      o_id = #{oId,jdbcType=INTEGER},
+      ac_money = #{acMoney,jdbcType=REAL},
+      ac_status = #{acStatus,jdbcType=INTEGER},
+      ac_type = #{acType,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      ac_time = #{acTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

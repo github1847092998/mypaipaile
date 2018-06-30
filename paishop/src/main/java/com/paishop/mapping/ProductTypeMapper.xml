@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paishop.dao.ProductTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.paishop.entity.ProductType" >
+    <id column="pf_one" property="pfOne" jdbcType="INTEGER" />
+    <result column="pf_one_name" property="pfOneName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pf_one, pf_one_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product_type
+    where pf_one = #{pfOne,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_product_type
+    where pf_one = #{pfOne,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paishop.entity.ProductType" >
+    insert into t_product_type (pf_one, pf_one_name)
+    values (#{pfOne,jdbcType=INTEGER}, #{pfOneName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.paishop.entity.ProductType" >
+    insert into t_product_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pfOne != null" >
+        pf_one,
+      </if>
+      <if test="pfOneName != null" >
+        pf_one_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pfOne != null" >
+        #{pfOne,jdbcType=INTEGER},
+      </if>
+      <if test="pfOneName != null" >
+        #{pfOneName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.paishop.entity.ProductType" >
+    update t_product_type
+    <set >
+      <if test="pfOneName != null" >
+        pf_one_name = #{pfOneName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pf_one = #{pfOne,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paishop.entity.ProductType" >
+    update t_product_type
+    set pf_one_name = #{pfOneName,jdbcType=VARCHAR}
+    where pf_one = #{pfOne,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paishop.dao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.paishop.entity.Product" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pf_one" property="pfOne" jdbcType="INTEGER" />
+    <result column="s_id" property="sId" jdbcType="INTEGER" />
+    <result column="p_name" property="pName" jdbcType="VARCHAR" />
+    <result column="p_num" property="pNum" jdbcType="INTEGER" />
+    <result column="p_auction_num" property="pAuctionNum" jdbcType="INTEGER" />
+    <result column="p_market_price" property="pMarketPrice" jdbcType="REAL" />
+    <result column="p_sale_price" property="pSalePrice" jdbcType="REAL" />
+    <result column="media_main" property="mediaMain" jdbcType="VARCHAR" />
+    <result column="media_detail" property="mediaDetail" jdbcType="VARCHAR" />
+    <result column="p_spec" property="pSpec" jdbcType="VARCHAR" />
+    <result column="p_desc" property="pDesc" jdbcType="VARCHAR" />
+    <result column="collect_num" property="collectNum" jdbcType="INTEGER" />
+    <result column="star_num" property="starNum" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="sale_time" property="saleTime" jdbcType="TIMESTAMP" />
+    <result column="sale_num" property="saleNum" jdbcType="INTEGER" />
+    <result column="count_comment" property="countComment" jdbcType="INTEGER" />
+    <result column="auction_pv" property="auctionPv" jdbcType="INTEGER" />
+    <result column="create_tim" property="createTim" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pf_one, s_id, p_name, p_num, p_auction_num, p_market_price, p_sale_price, media_main, 
+    media_detail, p_spec, p_desc, collect_num, star_num, status, sale_time, sale_num, 
+    count_comment, auction_pv, create_tim, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paishop.entity.Product" >
+    insert into t_product (id, pf_one, s_id, 
+      p_name, p_num, p_auction_num, 
+      p_market_price, p_sale_price, media_main, 
+      media_detail, p_spec, p_desc, 
+      collect_num, star_num, status, 
+      sale_time, sale_num, count_comment, 
+      auction_pv, create_tim, modify_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{pfOne,jdbcType=INTEGER}, #{sId,jdbcType=INTEGER}, 
+      #{pName,jdbcType=VARCHAR}, #{pNum,jdbcType=INTEGER}, #{pAuctionNum,jdbcType=INTEGER}, 
+      #{pMarketPrice,jdbcType=REAL}, #{pSalePrice,jdbcType=REAL}, #{mediaMain,jdbcType=VARCHAR}, 
+      #{mediaDetail,jdbcType=VARCHAR}, #{pSpec,jdbcType=VARCHAR}, #{pDesc,jdbcType=VARCHAR}, 
+      #{collectNum,jdbcType=INTEGER}, #{starNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{saleTime,jdbcType=TIMESTAMP}, #{saleNum,jdbcType=INTEGER}, #{countComment,jdbcType=INTEGER}, 
+      #{auctionPv,jdbcType=INTEGER}, #{createTim,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.paishop.entity.Product" >
+    insert into t_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pfOne != null" >
+        pf_one,
+      </if>
+      <if test="sId != null" >
+        s_id,
+      </if>
+      <if test="pName != null" >
+        p_name,
+      </if>
+      <if test="pNum != null" >
+        p_num,
+      </if>
+      <if test="pAuctionNum != null" >
+        p_auction_num,
+      </if>
+      <if test="pMarketPrice != null" >
+        p_market_price,
+      </if>
+      <if test="pSalePrice != null" >
+        p_sale_price,
+      </if>
+      <if test="mediaMain != null" >
+        media_main,
+      </if>
+      <if test="mediaDetail != null" >
+        media_detail,
+      </if>
+      <if test="pSpec != null" >
+        p_spec,
+      </if>
+      <if test="pDesc != null" >
+        p_desc,
+      </if>
+      <if test="collectNum != null" >
+        collect_num,
+      </if>
+      <if test="starNum != null" >
+        star_num,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="saleTime != null" >
+        sale_time,
+      </if>
+      <if test="saleNum != null" >
+        sale_num,
+      </if>
+      <if test="countComment != null" >
+        count_comment,
+      </if>
+      <if test="auctionPv != null" >
+        auction_pv,
+      </if>
+      <if test="createTim != null" >
+        create_tim,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pfOne != null" >
+        #{pfOne,jdbcType=INTEGER},
+      </if>
+      <if test="sId != null" >
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="pName != null" >
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pNum != null" >
+        #{pNum,jdbcType=INTEGER},
+      </if>
+      <if test="pAuctionNum != null" >
+        #{pAuctionNum,jdbcType=INTEGER},
+      </if>
+      <if test="pMarketPrice != null" >
+        #{pMarketPrice,jdbcType=REAL},
+      </if>
+      <if test="pSalePrice != null" >
+        #{pSalePrice,jdbcType=REAL},
+      </if>
+      <if test="mediaMain != null" >
+        #{mediaMain,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaDetail != null" >
+        #{mediaDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="pSpec != null" >
+        #{pSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="pDesc != null" >
+        #{pDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="collectNum != null" >
+        #{collectNum,jdbcType=INTEGER},
+      </if>
+      <if test="starNum != null" >
+        #{starNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="saleTime != null" >
+        #{saleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleNum != null" >
+        #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="countComment != null" >
+        #{countComment,jdbcType=INTEGER},
+      </if>
+      <if test="auctionPv != null" >
+        #{auctionPv,jdbcType=INTEGER},
+      </if>
+      <if test="createTim != null" >
+        #{createTim,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.paishop.entity.Product" >
+    update t_product
+    <set >
+      <if test="pfOne != null" >
+        pf_one = #{pfOne,jdbcType=INTEGER},
+      </if>
+      <if test="sId != null" >
+        s_id = #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="pName != null" >
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pNum != null" >
+        p_num = #{pNum,jdbcType=INTEGER},
+      </if>
+      <if test="pAuctionNum != null" >
+        p_auction_num = #{pAuctionNum,jdbcType=INTEGER},
+      </if>
+      <if test="pMarketPrice != null" >
+        p_market_price = #{pMarketPrice,jdbcType=REAL},
+      </if>
+      <if test="pSalePrice != null" >
+        p_sale_price = #{pSalePrice,jdbcType=REAL},
+      </if>
+      <if test="mediaMain != null" >
+        media_main = #{mediaMain,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaDetail != null" >
+        media_detail = #{mediaDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="pSpec != null" >
+        p_spec = #{pSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="pDesc != null" >
+        p_desc = #{pDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="collectNum != null" >
+        collect_num = #{collectNum,jdbcType=INTEGER},
+      </if>
+      <if test="starNum != null" >
+        star_num = #{starNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="saleTime != null" >
+        sale_time = #{saleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleNum != null" >
+        sale_num = #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="countComment != null" >
+        count_comment = #{countComment,jdbcType=INTEGER},
+      </if>
+      <if test="auctionPv != null" >
+        auction_pv = #{auctionPv,jdbcType=INTEGER},
+      </if>
+      <if test="createTim != null" >
+        create_tim = #{createTim,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paishop.entity.Product" >
+    update t_product
+    set pf_one = #{pfOne,jdbcType=INTEGER},
+      s_id = #{sId,jdbcType=INTEGER},
+      p_name = #{pName,jdbcType=VARCHAR},
+      p_num = #{pNum,jdbcType=INTEGER},
+      p_auction_num = #{pAuctionNum,jdbcType=INTEGER},
+      p_market_price = #{pMarketPrice,jdbcType=REAL},
+      p_sale_price = #{pSalePrice,jdbcType=REAL},
+      media_main = #{mediaMain,jdbcType=VARCHAR},
+      media_detail = #{mediaDetail,jdbcType=VARCHAR},
+      p_spec = #{pSpec,jdbcType=VARCHAR},
+      p_desc = #{pDesc,jdbcType=VARCHAR},
+      collect_num = #{collectNum,jdbcType=INTEGER},
+      star_num = #{starNum,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      sale_time = #{saleTime,jdbcType=TIMESTAMP},
+      sale_num = #{saleNum,jdbcType=INTEGER},
+      count_comment = #{countComment,jdbcType=INTEGER},
+      auction_pv = #{auctionPv,jdbcType=INTEGER},
+      create_tim = #{createTim,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
