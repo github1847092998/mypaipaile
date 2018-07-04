@@ -9,14 +9,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.paishop.utils.WechatAccessToken;
 import com.paishop.utils.WechatAuthProcessUtil;
+import com.paishop.utils.WechatCommonUtil;
 import com.paishop.utils.WechatSNSUserInfo;
 @Controller
 @RequestMapping("/weixin")
@@ -24,7 +29,42 @@ public class LoginController {
 	/**
 	 * 确认请求来自微信服务器  微信的回调
 	 */
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public @ResponseBody String login(HttpServletRequest request) throws ServletException, IOException {
+	   request.setCharacterEncoding("utf-8");
+	   //response.setCharacterEncoding("utf-8");
+	   //PrintWriter out = response.getWriter();
+	   // 用户同意授权后，能获取到code
+	   String code = request.getParameter("code");
+	   //System.out.println(code);
+	   //String state = request.getParameter("state");
+	   String appid="wx7d6d5a75539c9e8e";
+	   String secret=" ca733bea9f1e0143fa7e719ead933069";
+	   String result=appid+secret;
+	  String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+       url = url.replace("APPID",appid);
+       url = url.replace("SECRET",secret);
+       url = url.replace("CODE",code);
+       // 获取网页授权凭证 发送https请求
+       JSONObject jsonObject = (WechatCommonUtil.httpsRequest(url, "GET", null));
+       if (jsonObject!=null) {
+           try {
+               
+               String asscessToken=jsonObject.getString("access_token");
+               String openid= jsonObject.getString("openid");
+               String unionid=jsonObject.getString("unionid");
+               result= "asscessToken:"+asscessToken+"    openid:"+openid+"    unionid:"+unionid;
+               return result;
+           } catch (Exception e) {
+               int errorCode = jsonObject.getInteger("errcode");
+               String errorMsg = jsonObject.getString("errmsg");
+               System.out.println(errorCode+""+errorMsg);
+           }
+       }
+	   return result;
+	}
+	/*@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String OAuthTest(HttpServletRequest request, HttpServletResponse response, Model model) throws ServletException, IOException {
 	   request.setCharacterEncoding("utf-8");
 	   response.setCharacterEncoding("utf-8");
@@ -65,5 +105,5 @@ public class LoginController {
 	      return result;
 	   }
 	   return result;
-	}
+	}*/
 }

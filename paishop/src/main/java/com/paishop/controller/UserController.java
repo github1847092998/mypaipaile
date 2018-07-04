@@ -48,10 +48,10 @@ public class UserController {
     
 	
 
-	@RequestMapping(value = "/addUser1", method = RequestMethod.GET)
+	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
 	public @ResponseBody String addUser(@RequestParam String openid, @RequestParam String unionid,
-			@RequestParam String nickname, @RequestParam int gender, @RequestParam String city, @RequestParam String province,
-			@RequestParam String country, @RequestParam String avatarUrl) {
+			@RequestParam String nickname, @RequestParam int gender, @RequestParam int city, @RequestParam int province,
+			@RequestParam int country, @RequestParam String avatarUrl) {
 		String res;
 		User user = new User();
 		user.setOpenid(openid);
@@ -65,33 +65,33 @@ public class UserController {
 
 		boolean bo = userManager.addUser(user);
 		if (bo == true) {
-			res = "鎴愬姛";
+			res = "成功";
 			return res;
 		} else {
-			res = "澶辫触";
+			res = "失败";
 			return res;
 		}
 	}
 
-	// 涓汉涓績
+	// 个人中心页面
 	@RequestMapping(value = "/findUserAllInfo", method = RequestMethod.GET)
 	public @ResponseBody JSONObject findUserAllInfo(@RequestParam("uId") int uId, @RequestParam("openid") String openid,
 			@RequestParam("oStatus") int oStatus, @RequestParam("offset") int offset,
 			@RequestParam("pageSize") int pageSize) {
-		System.out.println(uId + ":" + oStatus + ":" + offset);
+		//System.out.println(uId + ":" + oStatus + ":" + offset);
 		User user = userManager.findUserByOpenid(openid);
 		List<Order> orderList = orderManager.findAllOrderByUser(uId, oStatus, offset, pageSize);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("nickname", user.getNickname());
 		map.put("avatarUrl", user.getAvatarUrl());
-		// 璁㈠崟鐨勬暟閲�
+		// 
 		map.put("num", orderList.size());
 		map.put("detailAddress", user.getDetailAddress());
 		JSONObject jsArray = JSONObject.fromObject(map);
 		return jsArray;
 	}
 
-	// 涓汉淇℃伅
+	// 找到用户信息
 	@RequestMapping(value = "/findUserInfo", method = RequestMethod.GET)
 	public @ResponseBody JSONObject findUserInfo(@RequestParam("uId") int uId, @RequestParam("openid") String openid) {
 		// System.out.println(uId+":"+oStatus+":"+offset);
@@ -101,7 +101,7 @@ public class UserController {
 		return jsArray;
 	}
 
-	// 鏍规嵁璁㈠崟鐘舵�佸拰鐢ㄦ埛鏌ヨ涓�涓敤鎴风殑璁㈠崟
+	//找到在各个状态的订单
 	@RequestMapping(value = "/findUserOrder", method = RequestMethod.GET)
 	public @ResponseBody JSONArray findUserOrder(@RequestParam("uId") int uId, @RequestParam("openid") String openid,
 			@RequestParam("oStatus") int oStatus, @RequestParam("offset") int offset,
@@ -110,23 +110,22 @@ public class UserController {
 		List<Order> orderList = orderManager.findAllOrderByUser(uId, oStatus, offset, pageSize);
 		// System.out.println(orderList);
 		JSONArray jsArray = JSONArray.fromObject(orderList);
-		// 濡傛灉瀛楁涓殑鍊兼湁null鐨勶紝鎬庝箞杩斿洖鍒板墠绔細鍓嶇鍦ㄤ紶鍏ヤ繚瀛樻暟鎹椂淇濆瓨涓�0鎴栬�呯┖涓�
+		// 
 		return jsArray;
 	}
 
-	// 鏌ヨ鐢ㄦ埛鐨勬墍鏈夎鍗�
+	// 找到用户的所有订单
 	@RequestMapping(value = "/findUserOrderByUId", method = RequestMethod.GET)
 	public @ResponseBody JSONArray findUserOrderByUId(@RequestParam("uId") int uId,
 			@RequestParam("openid") String openid, @RequestParam("offset") int offset,
 			@RequestParam("pageSize") int pageSize) {
 		List<Order> orderList = orderManager.findUserOrderByUId(uId, offset, pageSize);
 		JSONArray jsArray = JSONArray.fromObject(orderList);
-		// 濡傛灉瀛楁涓殑鍊兼湁null鐨勶紝鎬庝箞杩斿洖鍒板墠绔細鍓嶇鍦ㄤ紶鍏ヤ繚瀛樻暟鎹椂淇濆瓨涓�0鎴栬�呯┖涓�
 
 		return jsArray;
 	}
 
-	// 淇敼鐢ㄦ埛淇℃伅
+	// 修改用户信息
 	@RequestMapping(value = "/modifyUser", method = RequestMethod.GET)
 	public @ResponseBody String modifyUser(@RequestParam String openid, @RequestParam String detailAddress) {
 		User user = new User();
@@ -135,15 +134,15 @@ public class UserController {
 		user.setOpenid(openid);
 		boolean b = userManager.modifyUser(user);
 		if (b == true) {
-			res = "鎴愬姛";
+			res = "成功";
 			return res;
 		} else {
-			res = "澶辫触";
+			res = "失败";
 			return res;
 		}
 	}
 
-	// 鎴戠殑绔炴媿
+	// 找到竞拍信息
 	@RequestMapping(value = "/findAuctionInfo", method = RequestMethod.GET)
 	public @ResponseBody JSONArray findAuctionInfoByUser(@RequestParam int uId, @RequestParam String openid,
 			@RequestParam int oStatus, @RequestParam int offset, @RequestParam int pageSize) {

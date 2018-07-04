@@ -42,6 +42,12 @@
     from t_product  
     where status in(1,2)  limit #{offset},  #{pageSize}
   </select>
+  <select id="selectGoodsByName" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product  
+    where p_name=#{keyword, jdbcType=VARCHAR} limit #{offset},  #{pageSize}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_product
     where id = #{id,jdbcType=INTEGER}

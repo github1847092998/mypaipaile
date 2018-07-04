@@ -16,11 +16,11 @@ public class User {
 
     private Integer gender;
 
-    private String city;
+    private int city;
 
-    private String province;
+    private int province;
 
-    private String country;
+    private int country;
 
     private String avatarUrl;
 
@@ -74,31 +74,33 @@ public class User {
         this.gender = gender;
     }
 
-    public String getCity() {
-        return city;
-    }
+   
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+    public int getCity() {
+		return city;
+	}
 
-    public String getProvince() {
-        return province;
-    }
+	public void setCity(int city) {
+		this.city = city;
+	}
 
-    public void setProvince(String province) {
-        this.province = province;
-    }
+	public int getProvince() {
+		return province;
+	}
 
-    public String getCountry() {
-        return country;
-    }
+	public void setProvince(int province) {
+		this.province = province;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public int getCountry() {
+		return country;
+	}
 
-    public String getAvatarUrl() {
+	public void setCountry(int country) {
+		this.country = country;
+	}
+
+	public String getAvatarUrl() {
         return avatarUrl;
     }
 

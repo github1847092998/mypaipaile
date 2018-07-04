@@ -18,6 +18,8 @@ public interface ProductMapper {
     
     List<Product> selectAllProducts(@Param("offset") int offset, @Param("pageSize") int pageSize);
     
+    List<Product> selectGoodsByName(@Param("keyword") String keyword,@Param("offset") int offset, @Param("pageSize") int pageSize);
+    
     List<Product> selectProductsBySaler();
     
     int updateByPrimaryKeySelective(Product record);

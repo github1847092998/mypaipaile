@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.paishop.entity.Product;
 import com.paishop.manager.ProductManager;
 
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -25,7 +26,7 @@ import net.sf.json.JSONObject;
 public class ProductController {
 	@Autowired
 	private ProductManager productManager;
-	//棣栭〉鏌ヨ鎵�鏈夌殑鍟嗗搧:涓�鏈熺敤闅忔満鎺ㄨ崘
+	//首页商品查询
 	@RequestMapping(value = "/findAllProducts", method = RequestMethod.GET)
 	public @ResponseBody JSONArray showIndex(@RequestParam int uId, @RequestParam String openid,
 			     @RequestParam int offset, @RequestParam int pageSize ) {
@@ -64,7 +65,7 @@ public class ProductController {
 			
 		  return jsArray;
 	}
-	//鐘舵�佸垏鎹�
+	//状态切换
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.GET)
 	public @ResponseBody JSONObject modifyProduct(@RequestParam int id,@RequestParam int status) {
 		    Product product = new Product();
@@ -77,7 +78,19 @@ public class ProductController {
 		    jsArray.element("id", productResult.getId());
 		    jsArray.element("status", productResult.getStatus());
 		    return jsArray;
-      
-
 	}
+	
+	//根据关键词搜索商品
+		@RequestMapping(value = "/search_goods", method = RequestMethod.GET)
+		public @ResponseBody JSONArray findGoodsByName(@RequestParam int uid,@RequestParam String openid,
+				@RequestParam String keyword,@RequestParam int page_index, @RequestParam int page_num) {
+			    
+			    List<Product> productList = productManager.findGoodsByName(keyword, page_index, page_num);
+			   //System.out.println(productResult);
+			    JSONArray jsArray= new JSONArray();
+			    
+			    return jsArray;
+	      
+
+		}
 }

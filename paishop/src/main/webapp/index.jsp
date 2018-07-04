@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8" import="com.paishop.dao.MyUser"%>
+<%-- <%@ page language="java" pageEncoding="UTF-8" import="com.paishop.dao.MyUser"%>
   <!DOCTYPE html>
   <html>
 <head>
@@ -95,4 +95,4 @@
          //websocket.send(message1);
      }
  </script>
- </html>
+ </html> --%>

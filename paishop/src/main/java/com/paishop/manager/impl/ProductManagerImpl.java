@@ -45,6 +45,12 @@ public class ProductManagerImpl implements ProductManager{
 	public void modifyProductInfo(Product product) {
 		productMapper.updateByPrimaryKeySelective(product);
 	}
+
+	public List<Product> findGoodsByName(String keyword, int offset, int pageSize) {
+		// 
+		List<Product> productList = productMapper.selectGoodsByName(keyword, offset, pageSize);
+		return productList;
+	}
 	
 	
 
