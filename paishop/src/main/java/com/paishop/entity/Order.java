@@ -8,7 +8,12 @@ public class Order {
     private Integer pId;
 
     private Integer uId;
-
+    
+    private Integer sId;
+    
+    private String sUsername;
+    private String pPic;
+    
     private Float marketPrice;
 
     private Float buyPrice;
@@ -24,6 +29,8 @@ public class Order {
     private String oExpress;
 
     private Float expressFee;
+    
+    private Float sumMoney;
 
     private String uComment;
 
@@ -58,12 +65,39 @@ public class Order {
     public void setuId(Integer uId) {
         this.uId = uId;
     }
+    
 
-    public Float getMarketPrice() {
+    public Integer getsId() {
+		return sId;
+	}
+
+	public void setsId(Integer sId) {
+		this.sId = sId;
+	}
+
+	public String getsUsername() {
+		return sUsername;
+	}
+
+	public void setsUsername(String sUsername) {
+		this.sUsername = sUsername;
+	}
+
+	public Float getMarketPrice() {
         return marketPrice;
     }
+	
+	
 
-    public void setMarketPrice(Float marketPrice) {
+    public String getpPic() {
+		return pPic;
+	}
+
+	public void setpPic(String pPic) {
+		this.pPic = pPic;
+	}
+
+	public void setMarketPrice(Float marketPrice) {
         this.marketPrice = marketPrice;
     }
 
@@ -122,8 +156,16 @@ public class Order {
     public void setExpressFee(Float expressFee) {
         this.expressFee = expressFee;
     }
+ 
+    public Float getSumMoney() {
+		return sumMoney;
+	}
 
-    public String getuComment() {
+	public void setSumMoney(Float sumMoney) {
+		this.sumMoney = sumMoney;
+	}
+
+	public String getuComment() {
         return uComment;
     }
 

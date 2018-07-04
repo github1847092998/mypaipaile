@@ -10,9 +10,7 @@ public class User {
 
     private String unionid;
     
-    private List<Order> orderList;
     
-    private List<Auction> auctionList;
 
     private String nickname;
 
@@ -58,13 +56,7 @@ public class User {
         this.unionid = unionid == null ? null : unionid.trim();
     }
 
-    public List<Order> getOrder() {
-		return orderList;
-	}
-
-	public void setOrderList(List<Order> orderList) {
-		this.orderList = orderList;
-	}
+   
 
 	public String getNickname() {
         return nickname;

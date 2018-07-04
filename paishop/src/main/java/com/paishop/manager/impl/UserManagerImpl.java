@@ -1,13 +1,12 @@
 package com.paishop.manager.impl;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.paishop.dao.UserMapper;
-import com.paishop.entity.Auction;
-import com.paishop.entity.Order;
+
 import com.paishop.entity.PageModel;
 import com.paishop.entity.User;
 import com.paishop.manager.UserManager;
@@ -18,13 +17,12 @@ public class UserManagerImpl implements UserManager{
 
 	public boolean addUser(User user) {
 		 boolean b = userMapper.insertSelective(user);
-		 return b;
-		
+		return b;
 	}
-    //ĞŞ¸ÄÓÃ»§ÊÕ»õµØÖ·£º´Ónullµ½ÏÖÔÚµÄÖµ
-	public void modifyUser(User user) {
-		
-		
+    //ä¿®æ”¹ç”¨æˆ·æ”¶è´§åœ°å€ï¼šä»nullåˆ°ç°åœ¨çš„å€¼
+	public boolean modifyUser(User user) {
+		boolean b = userMapper.updateByPrimaryKeySelective(user);
+		return b;
 	}
 
 	public void deleteUserById(int userId) {
@@ -32,8 +30,8 @@ public class UserManagerImpl implements UserManager{
 		
 	}
 
-	public User findUserById(int userId) {
-		User user = userMapper.selectByPrimaryKey(userId);
+	public User findUserByOpenid(String openid) {
+		User user = userMapper.selectByOpenid(openid);
 		return user;
 	}
 
@@ -45,16 +43,12 @@ public class UserManagerImpl implements UserManager{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public PageModel<Auction> findAuctionInfoByUserId(int userId) {
-		//Í¨¹ıÓÃ»§idÕÒµ½ÊôÓÚÕâ¸öÓÃ»§µÄËùÓĞ¾ºÅÄ
-		PageModel<Auction> auctionList = (PageModel<Auction>) userMapper.findAuctionInfoByUserId(userId);
-		return auctionList;
+	public void modifyUserAddress(User user) {
+		 userMapper.updateByPrimaryKeySelective(user);
+		
 	}
 	
-	public PageModel<Order> findAllOrderByUser(int userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }
+

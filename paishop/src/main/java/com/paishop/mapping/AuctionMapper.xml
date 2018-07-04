@@ -5,21 +5,24 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="p_id" property="pId" jdbcType="INTEGER" />
     <result column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="p_name" property="pName" jdbcType="VARCHAR" />
+    <result column="p_pic" property="pPic" jdbcType="VARCHAR" />
+    <result column="p_price" property="pPrice" jdbcType="REAL" />
+    <result column="auction_name" property="auctionName" jdbcType="VARCHAR" />
+    <result column="auction_price" property="auctionPrice" jdbcType="REAL" />
+    <result column="coupon" property="coupon" jdbcType="REAL" />
     <result column="auction_uv" property="auctionUv" jdbcType="INTEGER" />
     <result column="aution_pv" property="autionPv" jdbcType="INTEGER" />
     <result column="auction_stage" property="auctionStage" jdbcType="INTEGER" />
-    <result column="auction_price" property="auctionPrice" jdbcType="REAL" />
     <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="auction_name" property="auctionName" jdbcType="VARCHAR" />
-    <result column="p_price" property="pPrice" jdbcType="REAL" />
-    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="auction_time" property="auctionTime" jdbcType="TIMESTAMP" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, p_id, u_id, auction_uv, aution_pv, auction_stage, auction_price, status, auction_name, 
-    p_price, start_time, auction_time, end_time, create_time
+    id, p_id, u_id, p_name,p_pic,  p_price, auction_name, auction_price, auction_uv, aution_pv, auction_stage, status,  
+    auction_time, start_time,  end_time, create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -27,6 +30,13 @@
     from t_auction
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectAuctionInfoByUser" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select  
+    <include refid="Base_Column_List" />
+    from t_auction  
+    where u_id = #{uId}  limit #{offset}, #{pageSize} 
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_auction
     where id = #{id,jdbcType=INTEGER}

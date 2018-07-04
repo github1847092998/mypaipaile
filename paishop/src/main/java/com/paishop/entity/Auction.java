@@ -8,20 +8,26 @@ public class Auction {
     private Integer pId;
 
     private Integer uId;
+    
+    private String pPic;
+    
+    private String pName;
+    
+    private float pPrice;
+    
+    private String auctionName;
 
+    private Float auctionPrice;
+    
+    private String coupon;
+    
     private Integer auctionUv;
 
     private Integer autionPv;
-
-    private Integer auctionStage;
-
-    private Float auctionPrice;
-
+    
     private Integer status;
-
-    private String auctionName;
-
-    private Float pPrice;
+    
+    private Integer auctionStage;
 
     private Date startTime;
 
@@ -55,7 +61,35 @@ public class Auction {
         this.uId = uId;
     }
 
-    public Integer getAuctionUv() {
+	public String getpPic() {
+		return pPic;
+	}
+
+	public void setpPic(String pPic) {
+		this.pPic = pPic;
+	}
+
+	public String getpName() {
+		return pName;
+	}
+
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
+
+	public String getCoupon() {
+		return coupon;
+	}
+
+	public void setCoupon(String coupon) {
+		this.coupon = coupon;
+	}
+
+	public void setpPrice(float pPrice) {
+		this.pPrice = pPrice;
+	}
+
+	public Integer getAuctionUv() {
         return auctionUv;
     }
 
@@ -103,15 +137,11 @@ public class Auction {
         this.auctionName = auctionName == null ? null : auctionName.trim();
     }
 
-    public Float getpPrice() {
-        return pPrice;
-    }
+    public float getpPrice() {
+		return pPrice;
+	}
 
-    public void setpPrice(Float pPrice) {
-        this.pPrice = pPrice;
-    }
-
-    public Date getStartTime() {
+	public Date getStartTime() {
         return startTime;
     }
 

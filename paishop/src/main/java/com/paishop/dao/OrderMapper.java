@@ -1,5 +1,9 @@
 package com.paishop.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.paishop.entity.Order;
 
 public interface OrderMapper {
@@ -14,4 +18,8 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+    
+    List<Order> selectAllOrderByUser(@Param("uId") int uId, @Param("oStatus") int oStatus, @Param("offset") int offset, @Param("pageSize") int pageSize);
+    
+    List<Order> selectAllOrderByUserUId(@Param("uId") int uId, @Param("offset") int offset, @Param("pageSize") int pageSize);
 }

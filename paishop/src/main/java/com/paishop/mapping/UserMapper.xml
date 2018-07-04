@@ -15,51 +15,31 @@
     <result column="detail_address" property="detailAddress" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
-    <collection property="orderList"
-                             ofType="com.paishop.entity.Order"
-                             select="findAllOrderByUser"
-                             column="id"/>
-    <collection property="auctionList"
-                             ofType="com.paishop.entity.Auction"
-                             select="findAuctionInfoByUserId"
-                             column="id"/>
+    
   </resultMap>
   <sql id="Base_Column_List" >
     id, openid, unionid, nickname, gender, city, province, country, avatar_url, telphone, 
     detail_address, create_time, modify_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from t_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="findAllOrderByUser" resultType="com.paishop.entity.Order" parameterType="java.lang.Integer" >
-    select id, p_id, u_id, market_price, buy_price, o_status, o_address, o_spec, user_remark, 
-    o_express, express_fee, u_comment, affer_sale_type, after_sale_status, o_createtime, o_modifytime 
-    from t_order 
-    where u_id = #{id,jdbcType=INTEGER} 
-    limit #{offset},#{pageSize}
+    where openid = #{openid,jdbcType=VARCHAR}
   </select>
   
-  <select id="findAuctionInfoByUserId" resultType="com.paishop.entity.Auction" parameterType="java.lang.Integer" >
-    select id, p_id, u_id, auction_uv, aution_pv, auction_stage, auction_price, status, auction_name, 
-    p_price, start_time, auction_time, end_time, create_time 
-    from t_auction 
-    where u_id = #{id,jdbcType=INTEGER} 
-    limit #{offset},#{pageSize}
-  </select>
-  <select id="selectAllUser" resultMap="BaseResultMap" parameterType="java.util.Map" >
+ 
+  <select id="selectAllUser" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
     from t_user  
-    limit #{offset},#{pageSize}
+    limit #{offset,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
   </select>
-  <select id="selectAllUserByName" resultMap="BaseResultMap" parameterType="java.util.Map">
+  <select id="selectAllUserByName" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select
     <include refid="Base_Column_List" />
     from t_user  
-    limit #{offset},#{pageSize}
+    limit #{offset,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
     
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -204,7 +184,7 @@
         modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where openid = #{openid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.paishop.entity.User" >
     update t_user

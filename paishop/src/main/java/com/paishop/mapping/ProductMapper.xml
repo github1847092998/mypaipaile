@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pf_one" property="pfOne" jdbcType="INTEGER" />
     <result column="s_id" property="sId" jdbcType="INTEGER" />
+    <result column="s_username" property="sUsername" jdbcType="VARCHAR" />
     <result column="p_name" property="pName" jdbcType="VARCHAR" />
     <result column="p_num" property="pNum" jdbcType="INTEGER" />
     <result column="p_auction_num" property="pAuctionNum" jdbcType="INTEGER" />
@@ -21,19 +22,25 @@
     <result column="sale_num" property="saleNum" jdbcType="INTEGER" />
     <result column="count_comment" property="countComment" jdbcType="INTEGER" />
     <result column="auction_pv" property="auctionPv" jdbcType="INTEGER" />
-    <result column="create_tim" property="createTim" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, pf_one, s_id, p_name, p_num, p_auction_num, p_market_price, p_sale_price, media_main, 
+    id, pf_one, s_id, s_username, p_name, p_num, p_auction_num, p_market_price, p_sale_price, media_main, 
     media_detail, p_spec, p_desc, collect_num, star_num, status, sale_time, sale_num, 
-    count_comment, auction_pv, create_tim, modify_time
+    count_comment, auction_pv, create_time, modify_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_product
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllProducts" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product  
+    where status in(1,2)  limit #{offset},  #{pageSize}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_product
@@ -46,7 +53,7 @@
       media_detail, p_spec, p_desc, 
       collect_num, star_num, status, 
       sale_time, sale_num, count_comment, 
-      auction_pv, create_tim, modify_time
+      auction_pv, create_time, modify_time
       )
     values (#{id,jdbcType=INTEGER}, #{pfOne,jdbcType=INTEGER}, #{sId,jdbcType=INTEGER}, 
       #{pName,jdbcType=VARCHAR}, #{pNum,jdbcType=INTEGER}, #{pAuctionNum,jdbcType=INTEGER}, 
@@ -54,7 +61,7 @@
       #{mediaDetail,jdbcType=VARCHAR}, #{pSpec,jdbcType=VARCHAR}, #{pDesc,jdbcType=VARCHAR}, 
       #{collectNum,jdbcType=INTEGER}, #{starNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{saleTime,jdbcType=TIMESTAMP}, #{saleNum,jdbcType=INTEGER}, #{countComment,jdbcType=INTEGER}, 
-      #{auctionPv,jdbcType=INTEGER}, #{createTim,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      #{auctionPv,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.paishop.entity.Product" >
@@ -117,8 +124,8 @@
       <if test="auctionPv != null" >
         auction_pv,
       </if>
-      <if test="createTim != null" >
-        create_tim,
+      <if test="createTime != null" >
+        create_time,
       </if>
       <if test="modifyTime != null" >
         modify_time,
@@ -183,7 +190,7 @@
         #{auctionPv,jdbcType=INTEGER},
       </if>
       <if test="createTim != null" >
-        #{createTim,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="modifyTime != null" >
         #{modifyTime,jdbcType=TIMESTAMP},
@@ -198,6 +205,9 @@
       </if>
       <if test="sId != null" >
         s_id = #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="sUsername != null" >
+        s_username = #{sUsername,jdbcType=INTEGER},
       </if>
       <if test="pName != null" >
         p_name = #{pName,jdbcType=VARCHAR},
@@ -247,8 +257,8 @@
       <if test="auctionPv != null" >
         auction_pv = #{auctionPv,jdbcType=INTEGER},
       </if>
-      <if test="createTim != null" >
-        create_tim = #{createTim,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="modifyTime != null" >
         modify_time = #{modifyTime,jdbcType=TIMESTAMP},
@@ -260,6 +270,7 @@
     update t_product
     set pf_one = #{pfOne,jdbcType=INTEGER},
       s_id = #{sId,jdbcType=INTEGER},
+      s_username = #{sUsername,jdbcType=INTEGER},
       p_name = #{pName,jdbcType=VARCHAR},
       p_num = #{pNum,jdbcType=INTEGER},
       p_auction_num = #{pAuctionNum,jdbcType=INTEGER},
@@ -276,7 +287,7 @@
       sale_num = #{saleNum,jdbcType=INTEGER},
       count_comment = #{countComment,jdbcType=INTEGER},
       auction_pv = #{auctionPv,jdbcType=INTEGER},
-      create_tim = #{createTim,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

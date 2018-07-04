@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,163 +20,142 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.paishop.entity.Auction;
 import com.paishop.entity.Order;
+import com.paishop.entity.PageModel;
+import com.paishop.entity.Saler;
 import com.paishop.entity.User;
+import com.paishop.manager.AuctionManager;
+import com.paishop.manager.OrderManager;
+import com.paishop.manager.SalerManager;
 import com.paishop.manager.UserManager;
-import com.paishop.util.AesCbcUtil;
-import com.paishop.util.HttpRequest;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
 	@Autowired
 	private UserManager userManager;
-	//»ñÈ¡µ½Î¢ĞÅÓÃ»§ĞÅÏ¢²¢±£´æ
-	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
-	public @ResponseBody Map addUserInfo(String encryptedData, String iv, String code) {
-		Map map = new HashMap();
-	    //µÇÂ¼Æ¾Ö¤²»ÄÜÎª¿Õ
-	    if (code == null || code.length() == 0) {
-	        map.put("status", 0);
-	        map.put("msg", "code ²»ÄÜÎª¿Õ");
-	        return map;
-	    }
-	    //Ğ¡³ÌĞòÎ¨Ò»±êÊ¶   (ÔÚÎ¢ĞÅĞ¡³ÌĞò¹ÜÀíºóÌ¨»ñÈ¡)
-	    String wxspAppid = "***********************";
-	    //Ğ¡³ÌĞòµÄ app secret (ÔÚÎ¢ĞÅĞ¡³ÌĞò¹ÜÀíºóÌ¨»ñÈ¡)
-	    String wxspSecret = "************************";
-	    //ÊÚÈ¨£¨±ØÌî£©
-	    String grant_type = "***************************";
 
+	@Autowired
+	private OrderManager orderManager;
 
-	    //////////////// 1¡¢ÏòÎ¢ĞÅ·şÎñÆ÷ Ê¹ÓÃµÇÂ¼Æ¾Ö¤ code »ñÈ¡ session_key ºÍ openid ////////////////
-	    //ÇëÇó²ÎÊı
-	    String params = "appid=" + wxspAppid + "&secret=" + wxspSecret + "&js_code=" + code + "&grant_type=" + grant_type;
-	    //·¢ËÍÇëÇó
-	    String sr = HttpRequest.sendGet("https://api.weixin.qq.com/sns/jscode2session", params);
-	    //½âÎöÏàÓ¦ÄÚÈİ£¨×ª»»³Éjson¶ÔÏó£©
-	    JSONObject json = JSONObject.fromObject(sr);
-	    //»ñÈ¡»á»°ÃÜÔ¿£¨session_key£©
-	    String session_key = json.get("session_key").toString();
-	    //ÓÃ»§µÄÎ¨Ò»±êÊ¶£¨openid£©
-	    String openid = (String) json.get("openid");
-
-	    //////////////// 2¡¢¶ÔencryptedData¼ÓÃÜÊı¾İ½øĞĞAES½âÃÜ ////////////////
-	    try {
-	        String result = AesCbcUtil.decrypt(encryptedData, session_key, iv, "UTF-8");
-	        if (null != result && result.length() > 0) {
-	            map.put("ret", 1);
-	            map.put("msg", "³É¹¦");
-	            JSONObject userInfoJSON = JSONObject.fromObject(result);
-	            String openId=(String)userInfoJSON.get("openId");
-	            String unionid=(String)userInfoJSON.get("unionId");
-	            String nickName=(String)userInfoJSON.get("nickName");
-	            String gender=(String)userInfoJSON.get("gender");
-	            int gender1=Integer.parseInt(gender);
-	            String city=(String)userInfoJSON.get("city");
-	            String province=(String)userInfoJSON.get("province");
-	            String country=(String)userInfoJSON.get("country");
-	            String avatarUrl=(String)userInfoJSON.get("avatarUrl");
-	            User user = new User();
-	            user.setOpenid(openId);
-
-
-	            UserController contro=new UserController();
-	            contro.addUserInfo(user);
-	            return map;
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    map.put("ret", 0);
-	    map.put("msg", "Ê§°Ü");
-	    return map;
-	}
+	@Autowired
+	private SalerManager salerManager;
+	@Autowired
+	private AuctionManager auctionManager;
+    
 	
-	public void addUserInfo(User user) {
-		
-	    
-	}
-	
+
 	@RequestMapping(value = "/addUser1", method = RequestMethod.GET)
-	public @ResponseBody String addUser(@RequestParam String openid, @RequestParam String unionid, @RequestParam String nickname, 
-			@RequestParam int gender, @RequestParam String city, @RequestParam String province, @RequestParam String country, 
-			@RequestParam String avatarUrl) {
-		    User user =new User();
-		    
-		    user.setOpenid(openid);
-		    user.setUnionid(unionid);
-            user.setNickname(nickname);
-            user.setGender(gender);
-            user.setCity(city);
-            user.setProvince(province);
-            user.setCountry(country);
-            user.setAvatarUrl(avatarUrl);
-            
-            boolean bo = userManager.addUser(user);
-            if(bo==true) {
-            	String res="³É¹¦";
-            	return res;
-            }else {
-            	String res="Ê§°Ü";
-            	return res;
-            }
-            
-	       
-	}
-	//¸öÈËÖĞĞÄÒ³Ãæ
-	@RequestMapping(value = "/findUserInfo", method = RequestMethod.GET)
-	public @ResponseBody JSONObject findUserInfo(@RequestBody int userId) {
-		User user = userManager.findUserById(userId);
-		String nickname=user.getNickname();
-		String avatarUrl=user.getAvatarUrl();
-		List<Order> orderList = user.getOrder();
-		
-		for (Order order : orderList) {
-			int orderId=order.getId();
-			int pId=order.getpId();
-			int uId=order.getuId();
-			float marketPrice = order.getMarketPrice();
-			float buyPrice = order.getBuyPrice();
-			int oStatus = order.getoStatus();
-			String oAddress=order.getoAddress();		
-		}
-		JSONObject js = JSONObject.fromObject(user);
-		return js;	
-		
-	}
-	//Ìí¼Ó»òĞŞ¸ÄÓÃ»§µØÖ·
-	@ResponseBody
-	@RequestMapping(value = "/addAddress", method = RequestMethod.GET)
-	public void modifyUser(@RequestParam(value="detailAddress") String detailAddress, @RequestParam(value="openid") String openid) {
+	public @ResponseBody String addUser(@RequestParam String openid, @RequestParam String unionid,
+			@RequestParam String nickname, @RequestParam int gender, @RequestParam String city, @RequestParam String province,
+			@RequestParam String country, @RequestParam String avatarUrl) {
+		String res;
 		User user = new User();
-		user.setDetailAddress(detailAddress);
 		user.setOpenid(openid);
-		userManager.modifyUser(user);		
+		user.setUnionid(unionid);
+		user.setNickname(nickname);
+		user.setGender(gender);
+		user.setCity(city);
+		user.setProvince(province);
+		user.setCountry(country);
+		user.setAvatarUrl(avatarUrl);
+
+		boolean bo = userManager.addUser(user);
+		if (bo == true) {
+			res = "é´æ„¬å§›";
+			return res;
+		} else {
+			res = "æ¾¶è¾«è§¦";
+			return res;
+		}
 	}
-	    //ÎÒµÄ¾ºÅÄ
-	@ResponseBody
-	@RequestMapping(value = "/myAuction", method = RequestMethod.GET)
-	public JSONObject auction(@RequestParam(value="userId") int userId) {
-		List<Auction> auctionList = (List<Auction>) userManager.findAuctionInfoByUserId(userId);
-		JSONObject js = JSONObject.fromObject(auctionList);
-		return js;				
+
+	// æ¶“îƒæ±‰æ¶“î…ç¸¾
+	@RequestMapping(value = "/findUserAllInfo", method = RequestMethod.GET)
+	public @ResponseBody JSONObject findUserAllInfo(@RequestParam("uId") int uId, @RequestParam("openid") String openid,
+			@RequestParam("oStatus") int oStatus, @RequestParam("offset") int offset,
+			@RequestParam("pageSize") int pageSize) {
+		System.out.println(uId + ":" + oStatus + ":" + offset);
+		User user = userManager.findUserByOpenid(openid);
+		List<Order> orderList = orderManager.findAllOrderByUser(uId, oStatus, offset, pageSize);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("nickname", user.getNickname());
+		map.put("avatarUrl", user.getAvatarUrl());
+		// ç’ãˆ å´Ÿé¨å‹¬æšŸé–²ï¿½
+		map.put("num", orderList.size());
+		map.put("detailAddress", user.getDetailAddress());
+		JSONObject jsArray = JSONObject.fromObject(map);
+		return jsArray;
 	}
-	
-	
-	@RequestMapping(value = "/addAddress")
-	public @ResponseBody String addAddress(@RequestParam String openid) {
-		   String userId = openid;
-			return userId;	
+
+	// æ¶“îƒæ±‰æ·‡â„ƒä¼…
+	@RequestMapping(value = "/findUserInfo", method = RequestMethod.GET)
+	public @ResponseBody JSONObject findUserInfo(@RequestParam("uId") int uId, @RequestParam("openid") String openid) {
+		// System.out.println(uId+":"+oStatus+":"+offset);
+		User user = userManager.findUserByOpenid(openid);
+
+		JSONObject jsArray = JSONObject.fromObject(user);
+		return jsArray;
 	}
-	
-	/*@RequestMapping("/addUser1")
-	public String addUser1(@RequestParam String username) {
-		ModelAndView mv = new ModelAndView("common/pub_add_success");
-			return "success";	
-	}*/
-	
+
+	// éè§„åµç’ãˆ å´Ÿé˜èˆµï¿½ä½¸æ‹°é¢ã„¦åŸ›éŒãƒ¨î‡—æ¶“ï¿½æ¶“î†æ•¤é´é£æ®‘ç’ãˆ å´Ÿ
+	@RequestMapping(value = "/findUserOrder", method = RequestMethod.GET)
+	public @ResponseBody JSONArray findUserOrder(@RequestParam("uId") int uId, @RequestParam("openid") String openid,
+			@RequestParam("oStatus") int oStatus, @RequestParam("offset") int offset,
+			@RequestParam("pageSize") int pageSize) {
+		// System.out.println(uId+":"+oStatus+":"+offset);
+		List<Order> orderList = orderManager.findAllOrderByUser(uId, oStatus, offset, pageSize);
+		// System.out.println(orderList);
+		JSONArray jsArray = JSONArray.fromObject(orderList);
+		// æ¿¡å‚›ç‰ç€›æ¥î†Œæ¶“î… æ®‘éŠå…¼æ¹nullé¨å‹¶ç´é¬åºç®æ©æ–¿æ´–é’æ¿å¢ ç»”îˆ¤ç´°é“å¶‡î¬é¦ã„¤ç´¶éãƒ¤ç¹šç€›æ¨»æšŸé¹î†½æ¤‚æ·‡æ¿†ç“¨æ¶“ï¿½0é´æ ¬ï¿½å‘¯â”–æ¶“ï¿½
+		return jsArray;
+	}
+
+	// éŒãƒ¨î‡—é¢ã„¦åŸ›é¨å‹¬å¢éˆå¤î…¹é—ï¿½
+	@RequestMapping(value = "/findUserOrderByUId", method = RequestMethod.GET)
+	public @ResponseBody JSONArray findUserOrderByUId(@RequestParam("uId") int uId,
+			@RequestParam("openid") String openid, @RequestParam("offset") int offset,
+			@RequestParam("pageSize") int pageSize) {
+		List<Order> orderList = orderManager.findUserOrderByUId(uId, offset, pageSize);
+		JSONArray jsArray = JSONArray.fromObject(orderList);
+		// æ¿¡å‚›ç‰ç€›æ¥î†Œæ¶“î… æ®‘éŠå…¼æ¹nullé¨å‹¶ç´é¬åºç®æ©æ–¿æ´–é’æ¿å¢ ç»”îˆ¤ç´°é“å¶‡î¬é¦ã„¤ç´¶éãƒ¤ç¹šç€›æ¨»æšŸé¹î†½æ¤‚æ·‡æ¿†ç“¨æ¶“ï¿½0é´æ ¬ï¿½å‘¯â”–æ¶“ï¿½
+
+		return jsArray;
+	}
+
+	// æ·‡î†½æ•¼é¢ã„¦åŸ›æ·‡â„ƒä¼…
+	@RequestMapping(value = "/modifyUser", method = RequestMethod.GET)
+	public @ResponseBody String modifyUser(@RequestParam String openid, @RequestParam String detailAddress) {
+		User user = new User();
+		String res;
+		user.setDetailAddress(detailAddress.toString());
+		user.setOpenid(openid);
+		boolean b = userManager.modifyUser(user);
+		if (b == true) {
+			res = "é´æ„¬å§›";
+			return res;
+		} else {
+			res = "æ¾¶è¾«è§¦";
+			return res;
+		}
+	}
+
+	// é´æˆ æ®‘ç»”ç‚´åª¿
+	@RequestMapping(value = "/findAuctionInfo", method = RequestMethod.GET)
+	public @ResponseBody JSONArray findAuctionInfoByUser(@RequestParam int uId, @RequestParam String openid,
+			@RequestParam int oStatus, @RequestParam int offset, @RequestParam int pageSize) {
+
+		List<Order> orderList = orderManager.findAllOrderByUser(uId, oStatus, offset, pageSize);
+		// System.out.println(auctionList);
+		JSONArray jsArray1 = JSONArray.fromObject(orderList);
+		List<Auction> auctionList = auctionManager.findAuctionInfoByUser(uId, offset, pageSize);
+		JSONArray jsArray2 = JSONArray.fromObject(auctionList);
+		JSONArray jsArray = JSONArray.fromObject(jsArray1 + "" + jsArray2);
+
+		return jsArray;
+	}
+
 }

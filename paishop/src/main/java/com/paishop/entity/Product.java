@@ -8,6 +8,8 @@ public class Product {
     private Integer pfOne;
 
     private Integer sId;
+    
+    private String sUsername;
 
     private String pName;
 
@@ -41,7 +43,7 @@ public class Product {
 
     private Integer auctionPv;
 
-    private Date createTim;
+    private Date createTime;
 
     private Date modifyTime;
 
@@ -68,8 +70,16 @@ public class Product {
     public void setsId(Integer sId) {
         this.sId = sId;
     }
+    
+    public String getsUsername() {
+		return sUsername;
+	}
 
-    public String getpName() {
+	public void setsUsername(String sUsername) {
+		this.sUsername = sUsername;
+	}
+
+	public String getpName() {
         return pName;
     }
 
@@ -197,12 +207,12 @@ public class Product {
         this.auctionPv = auctionPv;
     }
 
-    public Date getCreateTim() {
-        return createTim;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateTim(Date createTim) {
-        this.createTim = createTim;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getModifyTime() {

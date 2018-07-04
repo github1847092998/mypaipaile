@@ -5,6 +5,9 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="p_id" property="pId" jdbcType="INTEGER" />
     <result column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="s_id" property="sId" jdbcType="INTEGER" />
+    <result column="s_username" property="sUsername" jdbcType="VARCHAR" />
+    <result column="p_pic" property="pPic" jdbcType="VARCHAR" />
     <result column="market_price" property="marketPrice" jdbcType="REAL" />
     <result column="buy_price" property="buyPrice" jdbcType="REAL" />
     <result column="o_status" property="oStatus" jdbcType="INTEGER" />
@@ -20,7 +23,7 @@
     <result column="o_modifytime" property="oModifytime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, p_id, u_id, market_price, buy_price, o_status, o_address, o_spec, user_remark, 
+    id, p_id, u_id, s_id, s_username, p_pic, market_price, buy_price, o_status, o_address, o_spec, user_remark, 
     o_express, express_fee, u_comment, affer_sale_type, after_sale_status, o_createtime, 
     o_modifytime
   </sql>
@@ -30,21 +33,35 @@
     from t_order
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectAllOrderByUser" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select  
+    <include refid="Base_Column_List" />
+    from t_order   
+    where u_id = #{uId} and o_status=#{oStatus} limit #{offset}, #{pageSize} 
+   <!--  oStatus,jdbcType=INTEGER,offset,jdbcType=INTEGER pageSize,jdbcType=INTEGER-->
+  </select>
+   <select id="selectAllOrderByUserUId" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select  
+    <include refid="Base_Column_List" />
+    from t_order   
+    where u_id = #{uId}  limit #{offset}, #{pageSize}  
+   <!--  oStatus,jdbcType=INTEGER,offset,jdbcType=INTEGER pageSize,jdbcType=INTEGER-->
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.paishop.entity.Order" >
-    insert into t_order (id, p_id, u_id, 
+    insert into t_order (id, p_id, u_id, s_id,s_username, p_pic,
       market_price, buy_price, o_status, 
       o_address, o_spec, user_remark, 
       o_express, express_fee, u_comment, 
       affer_sale_type, after_sale_status, o_createtime, 
       o_modifytime)
-    values (#{id,jdbcType=INTEGER}, #{pId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{pId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{sId,jdbcType=INTEGER}, #{sUsername,jdbcType=VARCHAR},
       #{marketPrice,jdbcType=REAL}, #{buyPrice,jdbcType=REAL}, #{oStatus,jdbcType=INTEGER}, 
       #{oAddress,jdbcType=VARCHAR}, #{oSpec,jdbcType=VARCHAR}, #{userRemark,jdbcType=VARCHAR}, 
-      #{oExpress,jdbcType=VARCHAR}, #{expressFee,jdbcType=REAL}, #{uComment,jdbcType=VARCHAR}, 
+      #{oExpress,jdbcType=VARCHAR}, #{expressFee,jdbcType=REAL}, #{uComment,jdbcType=VARCHAR}, #{sumMoney,jdbcType=REAL},
       #{afferSaleType,jdbcType=INTEGER}, #{afterSaleStatus,jdbcType=INTEGER}, #{oCreatetime,jdbcType=TIMESTAMP}, 
       #{oModifytime,jdbcType=TIMESTAMP})
   </insert>
@@ -60,6 +77,15 @@
       <if test="uId != null" >
         u_id,
       </if>
+      <if test="sId != null" >
+        s_id,
+      </if>
+      <if test="sUsername != null" >
+        s_username,
+      </if> 
+      <if test="pPic != null" >
+        p_pic,
+      </if> 
       <if test="marketPrice != null" >
         market_price,
       </if>
@@ -87,6 +113,9 @@
       <if test="uComment != null" >
         u_comment,
       </if>
+      <if test="sumMoney != null" >
+        sum_money,
+      </if>
       <if test="afferSaleType != null" >
         affer_sale_type,
       </if>
@@ -109,6 +138,15 @@
       </if>
       <if test="uId != null" >
         #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="sId != null" >
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="sUsername != null" >
+        #{sUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="pPic!= null" >
+        #{pPic,jdbcType=VARCHAR},
       </if>
       <if test="marketPrice != null" >
         #{marketPrice,jdbcType=REAL},
@@ -137,6 +175,9 @@
       <if test="uComment != null" >
         #{uComment,jdbcType=VARCHAR},
       </if>
+      <if test="sumMoney != null" >
+        #{sumMoney,jdbcType=REAL},
+      </if>
       <if test="afferSaleType != null" >
         #{afferSaleType,jdbcType=INTEGER},
       </if>
@@ -159,6 +200,15 @@
       </if>
       <if test="uId != null" >
         u_id = #{uId,jdbcType=INTEGER},
+      </if>
+       <if test="pId != null" >
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null" >
+        #{sUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="pPic!= null" >
+        #{pPic,jdbcType=VARCHAR},
       </if>
       <if test="marketPrice != null" >
         market_price = #{marketPrice,jdbcType=REAL},
@@ -187,6 +237,9 @@
       <if test="uComment != null" >
         u_comment = #{uComment,jdbcType=VARCHAR},
       </if>
+      <if test="sumMoney != null" >
+        #{sumMoney,jdbcType=REAL},
+      </if>
       <if test="afferSaleType != null" >
         affer_sale_type = #{afferSaleType,jdbcType=INTEGER},
       </if>
@@ -206,6 +259,9 @@
     update t_order
     set p_id = #{pId,jdbcType=INTEGER},
       u_id = #{uId,jdbcType=INTEGER},
+      s_id = #{sId,jdbcType=INTEGER},
+      s_username = #{sUsername,jdbcType=INTEGER},
+      p_pic = #{pPic,jdbcType=INTEGER},
       market_price = #{marketPrice,jdbcType=REAL},
       buy_price = #{buyPrice,jdbcType=REAL},
       o_status = #{oStatus,jdbcType=INTEGER},
@@ -215,6 +271,7 @@
       o_express = #{oExpress,jdbcType=VARCHAR},
       express_fee = #{expressFee,jdbcType=REAL},
       u_comment = #{uComment,jdbcType=VARCHAR},
+      sum_money= #{sumMoney,jdbcType=REAL},
       affer_sale_type = #{afferSaleType,jdbcType=INTEGER},
       after_sale_status = #{afterSaleStatus,jdbcType=INTEGER},
       o_createtime = #{oCreatetime,jdbcType=TIMESTAMP},

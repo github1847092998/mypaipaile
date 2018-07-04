@@ -8,21 +8,20 @@ import com.paishop.entity.PageModel;
 import com.paishop.entity.User;
 
 public interface UserManager {
-	//Ìí¼ÓÓÃ»§
+	//æ·»åŠ ç”¨æˆ·
 	public boolean addUser(User user);
-	//ĞŞ¸ÄÓÃ»§
-	public void modifyUser(User user);
-	//É¾³ıÓÃ»§
+	//ä¿®æ”¹ç”¨æˆ·
+	public boolean modifyUser(User user);
+/*	//ä¿®æ”¹ç”¨æˆ¶åœ°å€
+	public void modifyUserAddress(User user);*/
+	//åˆ é™¤ç”¨æˆ·
 	public void deleteUserById(int userId);
-	//²éÑ¯Ò»¸öÓÃ»§
-	public User findUserById(int userId);
-	//Ä£ºı²éÑ¯
+	//æŸ¥è¯¢ä¸€ä¸ªç”¨æˆ·
+	public User findUserByOpenid(String openid);
+	//æ¨¡ç³ŠæŸ¥è¯¢
 	public PageModel<User> findAllUserByName(String username);
-	//²éÑ¯ËùÓĞÓÃ»§
+	//æŸ¥è¯¢æ‰€æœ‰ç”¨æˆ·
     public PageModel<User> findAllUser(int offset, int pageSize);
-    //²éÑ¯³öÊôÓÚÕâ¸öÓÃ»§µÄËùÓĞ¶©µ¥
-    PageModel<Order> findAllOrderByUser(int userId);
-    //Í¨¹ıÓÃ»§idÕÒµ½ÊôÓÚÕâ¸öÓÃ»§µÄËùÓĞ¾ºÅÄ
-    public PageModel<Auction> findAuctionInfoByUserId(int userId);
 
 }
+

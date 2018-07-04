@@ -13,9 +13,9 @@ public interface UserMapper {
 
     boolean insertSelective(User user);
 
-    User selectByPrimaryKey(Integer id);
+    User selectByOpenid(String openid);
 
-    int updateByPrimaryKeySelective(User record);
+    boolean updateByPrimaryKeySelective(User user);
 
     int updateByPrimaryKey(User record);
     
@@ -23,7 +23,6 @@ public interface UserMapper {
     
     List<User> selectAllUserByName(String username);
     
-    List<Order> selectOrderByUser(int userId);
     
     List<Auction> findAuctionInfoByUserId(int userId);
 }
