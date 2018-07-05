@@ -15,6 +15,8 @@ public interface AuctionMapper {
 
     Auction selectByPrimaryKey(Integer id);
     
+    Auction selectAuctionByPid(Integer pid);
+    
     List<Auction> selectAuctionInfoByUser(@Param("uId") int uId,@Param("offset") int offset, @Param("pageSize") int pageSize);
 
     int updateByPrimaryKeySelective(Auction record);

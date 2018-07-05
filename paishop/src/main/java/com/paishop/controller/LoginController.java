@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -31,17 +32,17 @@ public class LoginController {
 	 */
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public @ResponseBody String login(HttpServletRequest request) throws ServletException, IOException {
-	   request.setCharacterEncoding("utf-8");
+	public @ResponseBody String login(@RequestParam String code) throws ServletException, IOException {
+	   //request.setCharacterEncoding("utf-8");
 	   //response.setCharacterEncoding("utf-8");
 	   //PrintWriter out = response.getWriter();
 	   // 用户同意授权后，能获取到code
-	   String code = request.getParameter("code");
+	   //String code = request.getParameter("code");
 	   //System.out.println(code);
 	   //String state = request.getParameter("state");
-	   String appid="wx7d6d5a75539c9e8e";
-	   String secret=" ca733bea9f1e0143fa7e719ead933069";
-	   String result=appid+secret;
+	   String appid="wxf0699dbe93322d73";
+	   String secret="1078842306d035ad36bc68a3196ce045";
+	   String res=code;
 	  String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
        url = url.replace("APPID",appid);
        url = url.replace("SECRET",secret);
@@ -54,15 +55,15 @@ public class LoginController {
                String asscessToken=jsonObject.getString("access_token");
                String openid= jsonObject.getString("openid");
                String unionid=jsonObject.getString("unionid");
-               result= "asscessToken:"+asscessToken+"    openid:"+openid+"    unionid:"+unionid;
-               return result;
+               res= "asscessToken:"+asscessToken+"    openid:"+openid+"    unionid:"+unionid;
+               return res;
            } catch (Exception e) {
                int errorCode = jsonObject.getInteger("errcode");
                String errorMsg = jsonObject.getString("errmsg");
                System.out.println(errorCode+""+errorMsg);
            }
        }
-	   return result;
+	   return res;
 	}
 	/*@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String OAuthTest(HttpServletRequest request, HttpServletResponse response, Model model) throws ServletException, IOException {

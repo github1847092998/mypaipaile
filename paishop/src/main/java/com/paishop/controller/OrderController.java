@@ -35,7 +35,7 @@ public class OrderController {
 	@Autowired
 	private ProductManager productManager;
 	
-	@RequestMapping(value = "/showOrderUI", method = RequestMethod.GET)
+  @RequestMapping(value = "/showOrderUI", method = RequestMethod.GET)
 	public @ResponseBody JSONObject showOrderUI(@RequestParam int pId,@RequestParam int uId, 
 			@RequestParam String openid,@RequestParam int sId, @RequestParam 	String sUsername,
 			@RequestParam String pName,@RequestParam String pPic,@RequestParam float marketPrice,
@@ -101,7 +101,7 @@ public class OrderController {
 			 result="添加失败";
 				return result; 
 		 }
-		/*orderMap.put("id", id); 
+		/* orderMap.put("id", id);
 		 orderMap.put("pId", pId);
 		 orderMap.put("uId", uId);
 		 orderMap.put("address", address);

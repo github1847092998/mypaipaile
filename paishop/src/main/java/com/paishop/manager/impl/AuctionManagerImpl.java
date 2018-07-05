@@ -20,12 +20,12 @@ public class AuctionManagerImpl implements AuctionManager {
 	}
 
 	public void addAuctionInfo(Auction record) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	public Auction findAuctionInfo(Integer id) {
-		// TODO Auto-generated method stub
+		auctionMapper.selectByPrimaryKey(id);
 		return null;
 	}
 
@@ -37,6 +37,11 @@ public class AuctionManagerImpl implements AuctionManager {
 	public List<Auction> findAuctionInfoByUser(int uId, int offset, int pageSize) {
 		List<Auction> auctionList = auctionMapper.selectAuctionInfoByUser(uId, offset, pageSize);
 		return auctionList;
+	}
+
+	public Auction findAuctionInfoByPid(Integer pid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

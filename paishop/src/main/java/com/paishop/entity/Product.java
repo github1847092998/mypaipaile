@@ -14,7 +14,7 @@ public class Product {
     private String pName;
 
     private Integer pNum;
-
+    
     private Integer pAuctionNum;
 
     private Float pMarketPrice;
@@ -94,8 +94,11 @@ public class Product {
     public void setpNum(Integer pNum) {
         this.pNum = pNum;
     }
+    
 
-    public Integer getpAuctionNum() {
+   
+
+	public Integer getpAuctionNum() {
         return pAuctionNum;
     }
 

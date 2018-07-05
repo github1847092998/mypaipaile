@@ -12,6 +12,8 @@ public interface AuctionManager {
 
     public Auction findAuctionInfo(Integer id);
     
+    public Auction findAuctionInfoByPid(Integer pid);
+    
     public List<Auction> findAuctionInfoByUser(int uId, int offset, int pageSize);
 
     public void modifyAuctionInfo(Auction record);

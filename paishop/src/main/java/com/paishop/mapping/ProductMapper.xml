@@ -24,6 +24,7 @@
     <result column="auction_pv" property="auctionPv" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+     
   </resultMap>
   <sql id="Base_Column_List" >
     id, pf_one, s_id, s_username, p_name, p_num, p_auction_num, p_market_price, p_sale_price, media_main, 
@@ -36,6 +37,7 @@
     from t_product
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
   <select id="selectAllProducts" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
     <include refid="Base_Column_List" />
@@ -46,7 +48,8 @@
     select 
     <include refid="Base_Column_List" />
     from t_product  
-    where p_name=#{keyword, jdbcType=VARCHAR} limit #{offset},  #{pageSize}
+    where p_name like '%"+pName+"%'   
+    limit #{offset},  #{pageSize}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_product
