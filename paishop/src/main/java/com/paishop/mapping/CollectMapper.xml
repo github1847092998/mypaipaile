@@ -18,7 +18,7 @@
     from t_collect
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id=findCollectInfoByUid resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findCollectInfoByUid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_collect

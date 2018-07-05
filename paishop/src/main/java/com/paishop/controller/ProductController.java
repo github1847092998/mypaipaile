@@ -108,12 +108,11 @@ public class ProductController {
 			JSONObject js1 = new JSONObject();
 			JSONObject js2 = new JSONObject();
 			JSONObject js3 = new JSONObject();
-			    List<Product> productList = productManager.findGoodsByName(keyword, page_index, page_num);
-			    for (Product product : productList) {
+			List<Product> productList = productManager.findGoodsByName(keyword, page_index, page_num);
+			System.out.println(productList);
+			   /* for (Product product : productList) {
 					Auction auction = auctionManager.findAuctionInfoByPid(product.getId());
-					Collect collect = collectManager.findCollectInfoByUid(auction.getuId());
-					
-					
+					Collect collect = collectManager.findCollectInfoByUid(auction.getuId());	
 					js3.put("title", product.getpName());
 					js3.put("media_url", product.getMediaMain());
 					js3.put("star", product.getStarNum());
@@ -145,12 +144,10 @@ public class ProductController {
 					js.put("msg", "success");
 					js.put("products", js1);
 					
-				}
+				}*/
 			   //System.out.println(productResult);
 			    JSONArray jsArray= new JSONArray();
-			    jsArray.add(js);
+			    jsArray.add(productList);
 			    return jsArray;
-	      
-
 		}
 }

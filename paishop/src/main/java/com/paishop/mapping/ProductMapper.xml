@@ -48,8 +48,8 @@
     select 
     <include refid="Base_Column_List" />
     from t_product  
-    where p_name like '%"+pName+"%'   
-    limit #{offset},  #{pageSize}
+    where p_name like '%${keyword}%'   
+    limit #{offset}, #{pageSize}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_product
