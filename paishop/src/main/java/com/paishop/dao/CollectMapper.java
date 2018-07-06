@@ -1,5 +1,9 @@
 package com.paishop.dao;
 
+
+
+import org.apache.ibatis.annotations.Param;
+
 import com.paishop.entity.Collect;
 
 public interface CollectMapper {
@@ -11,7 +15,7 @@ public interface CollectMapper {
 
     Collect selectByPrimaryKey(Integer id);
     
-    Collect findCollectInfoByUid(int uid);
+    Collect selectUserCollectInfo(@Param("uid")int uid, @Param("pid")int pid);
 
     int updateByPrimaryKeySelective(Collect record);
 

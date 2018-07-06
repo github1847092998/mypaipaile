@@ -1,4 +1,4 @@
-<%-- <%@ page language="java" pageEncoding="UTF-8" import="com.paishop.dao.MyUser"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
   <!DOCTYPE html>
   <html>
 <head>
@@ -10,9 +10,9 @@
          <tr>
            <td><input id="username" type="text"/></td>
          </tr>
-        <tr>
+       <!--  <tr>
            <td><input id="password" type="text"/></td>
-         </tr> 
+         </tr>  -->
          <!-- <tr>
            <td><input id="text2" type="text"/></td>
          </tr> 
@@ -27,7 +27,7 @@
     <button onclick="closeWebSocket()">关闭WebSocket连接</button>
     <hr/>
       <div id="message"></div> 
-      <div id="message1"></div>
+      <!-- <div id="message1"></div> -->
      <!-- <div id="message1"></div> -->
  </body>
  
@@ -35,7 +35,7 @@
      var websocket = null;
      //判断当前浏览器是否支持WebSocket
      if ('WebSocket' in window) {
-         websocket = new WebSocket("ws://localhost:8080/paishop/websocket");
+         websocket = new WebSocket("ws://localhost:8080/websocket");
      }
      else {
          alert('当前浏览器 Not support websocket')
@@ -68,7 +68,7 @@
     //将消息显示在网页上
     function setMessageInnerHTML(innerHTML) {
          document.getElementById('message').innerHTML += innerHTML + '<br/>';
-         document.getElementById('message1').innerHTML += innerHTML + '<br/>';
+         //document.getElementById('message1').innerHTML += innerHTML + '<br/>';
         // document.getElementById('message1').innerHTML += innerHTML + '<br/>';
      }
  
@@ -80,7 +80,7 @@
      //发送消息
      function send() {
         var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
+        /* var password = document.getElementById('password').value; */
         
         //var message1 = document.getElementById('text1').value;
         //var message2 = document.getElementById('text2').value;
@@ -88,11 +88,11 @@
         //text=message+message1;
        // var message1 = document.getElementById('password').value;
          websocket.send(username);
-         websocket.send(password);
+         //websocket.send(password);
          /* websocket.send(message1);
          websocket.send(message2);
          websocket.send(message3); */
          //websocket.send(message1);
      }
  </script>
- </html> --%>
+ </html> 

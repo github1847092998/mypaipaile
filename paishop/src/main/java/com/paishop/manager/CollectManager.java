@@ -9,7 +9,7 @@ public interface CollectManager {
 
 	public Collect findCollectInfo(Integer id);
 	
-	public Collect findCollectInfoByUid(int uid);
+	public Collect findUserCollectInfo(int uid, int pid);
 
 	public void modifyCollectInfo(Collect record);
 }

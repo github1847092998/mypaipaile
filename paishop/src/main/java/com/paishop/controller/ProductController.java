@@ -34,6 +34,7 @@ public class ProductController {
 	private AuctionManager auctionManager;
 	@Autowired
 	private CollectManager collectManager;
+	
 	//首页商品查询
 	@RequestMapping(value = "/showIndex", method = RequestMethod.GET)
 	public @ResponseBody JSONArray showIndex(@RequestParam int uId, @RequestParam String openid,
@@ -43,9 +44,94 @@ public class ProductController {
 		    Map<String, Object> collectMap= new HashMap<String, Object>();
 		    Map<String, Object> auctionMap= new HashMap<String, Object>();
 			List<Product> productList = productManager.findAllProducts(offset, pageSize);
+			JSONArray jsonArray = JSONArray.fromObject(productList);
+		    return jsonArray;
+	}
+	     //商品详情查询
+		@RequestMapping(value = "/showProductDetail", method = RequestMethod.GET)
+		public @ResponseBody JSONArray showProductDetail(@RequestParam int uid, @RequestParam String openid,
+				@RequestParam int pid) {
+			    Map<String, Object> map= new HashMap<String, Object>();
+			    Product product = productManager.findProductById(pid);
+			    System.out.println(product);
+			    //System.out.println(product.getAuction().getAuctionName());
+			    map.put("id", product.getId());
+			    map.put("sid", product.getsId());
+			    map.put("pName", product.getpName());
+			    map.put("pPic", product.getpSpec());
+			   
+			    map.put("marketPrice", product.getpMarketPrice());
+			    map.put("auctionId", "");
+		    	map.put("userId", "");
+		    	map.put("auctionPv", "");
+		    	map.put("cuPrice", product.getpSalePrice()*0.8);
+		    	//System.out.println(product.getpSalePrice());
+			    /*if(product.getAuction()==null) {
+			    	map.put("auctionId", "");
+			    	map.put("userId", "");
+			    	map.put("auctionPv", "");
+			    	map.put("cuPrice", (float)product.getpSalePrice()*0.8);
+			    }else {
+			    	map.put("auctionId", product.getAuction().getId());
+			    	map.put("userId", product.getAuction().getuId());
+			    	//map.put("userId", product.getAuction().getuId());
+			    	//map.put("auctionPv", product.getAuction().getAutionPv());
+			    	map.put("cuPrice", product.getAuction().getAuctionPrice());
+			    }*/
+				JSONArray jsArray = JSONArray.fromObject(map);
+			    return jsArray;
+		}
+		
+		//商品添加
+				@RequestMapping(value = "/addProducts", method = RequestMethod.GET)
+				public @ResponseBody String addProducts(@RequestParam int id, @RequestParam int pfOne,
+						@RequestParam int sId, @RequestParam String sUsername,@RequestParam String pName,
+						@RequestParam int pNum, @RequestParam int pAuctionNum, @RequestParam float pMarketPrice, 
+						@RequestParam float pSalePrice, @RequestParam JSONObject mediaMain, 
+						@RequestParam JSONObject mediaDetail, @RequestParam JSONObject pSpec,
+						@RequestParam String pDesc, @RequestParam int status, @RequestParam Date saleTime) {
+					    String result="";
+					    Product product = new Product();
+					    product.setId(id);
+					    product.setPfOne(pfOne);
+					    product.setsId(sId);
+					    product.setsUsername(sUsername);
+					    product.setpName(pName);
+					    product.setpNum(pNum);
+					    product.setpAuctionNum(pAuctionNum);
+					    product.setpMarketPrice(pMarketPrice);
+					    product.setpSalePrice(pSalePrice);
+					    product.setMediaMain(mediaMain.toString());
+					    product.setMediaMain(mediaDetail.toString());
+					    product.setpSpec(pSpec.toString());
+					    product.setpDesc(pDesc);
+					    product.setStatus(1);
+					    product.setSaleTime(saleTime);
+					    product.setCreateTime(new Date());
+					    boolean bo = productManager.addProduct(product);
+						if(bo==true) {
+							 return "商品上架成功";
+						}else {
+							return "失败，请重新上架商品";
+						}
+					   
+				}
+	
+	/*@RequestMapping(value = "/showIndex", method = RequestMethod.GET)
+	public @ResponseBody JSONArray showIndex(@RequestParam int uId, @RequestParam String openid,
+			     @RequestParam int offset, @RequestParam int pageSize ) {
+		      //String str = String.valueOf(uId);
+		     // int lastNum = str.charAt(str.length()-1);
+		    Map<String, Object> collectMap= new HashMap<String, Object>();
+		    Map<String, Object> auctionMap= new HashMap<String, Object>();
+			List<Product> productList = productManager.findAllProducts(offset, pageSize);
 			for (Product product : productList) {
-				//如果商品正在竞拍
+				if(product.getStatus()==1) {
+					//如果商品还没有开卖
+					
+				}
 				if(product.getStatus()==2) {
+					//如果商品正在竞拍
 					Auction auction = auctionManager.findAuctionInfo(product.getId());
 					auctionMap.put("aucId", auction.getId());
 					auctionMap.put("aucName", auction.getAuctionName());
@@ -73,18 +159,16 @@ public class ProductController {
 				collectMap.put("countTime", countTime);
 			}
 			JSONArray jsArray = JSONArray.fromObject(collectMap);
-			/*Map<String, Object> map= new HashMap<String, Object>();
+			Map<String, Object> map= new HashMap<String, Object>();
 			map.put("productList", collectMap);
 			Random random= new Random();
 			JSONArray jsArray=new JSONArray();
 			for(int i=0;i<productList.size();i++) {
 				int index=random.nextInt(productList.size()-1);
 				jsArray.add(map.get(index));
-			}*/
-			
-			
+			}
 		  return jsArray;
-	}
+	}*/
 	//状态切换
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.GET)
 	public @ResponseBody JSONObject modifyProduct(@RequestParam int id,@RequestParam int status) {
@@ -102,30 +186,34 @@ public class ProductController {
 	
 	//根据关键词搜索商品
 		@RequestMapping(value = "/search_goods", method = RequestMethod.GET)
-		public @ResponseBody JSONArray findGoodsByName(@RequestParam int uid,@RequestParam String openid,
+		public @ResponseBody JSONArray findGoodsByName(@RequestParam String openid,
 				@RequestParam String keyword,@RequestParam int page_index, @RequestParam int page_num) {
 			JSONObject js = new JSONObject();
 			JSONObject js1 = new JSONObject();
 			JSONObject js2 = new JSONObject();
 			JSONObject js3 = new JSONObject();
 			List<Product> productList = productManager.findGoodsByName(keyword, page_index, page_num);
-			System.out.println(productList);
-			   /* for (Product product : productList) {
-					Auction auction = auctionManager.findAuctionInfoByPid(product.getId());
-					Collect collect = collectManager.findCollectInfoByUid(auction.getuId());	
-					js3.put("title", product.getpName());
+			
+			   System.out.println(productList);
+			   for (Product product : productList) {
+					//Auction auction = auctionManager.findAuctionInfoByPid(product.getId());
+					//Collect collect = collectManager.findCollectInfoByUid(auction.getuId());	
+					/*js3.put("title", product.getpName());
 					js3.put("media_url", product.getMediaMain());
 					js3.put("star", product.getStarNum());
 					js3.put("comment",product.getCountComment());
 					js3.put("market_price",product.getpMarketPrice());
 					js3.put("repertory", product.getpNum());
-					js3.put("collect_cnt", product.getCollectNum());
-					if(collect!=null) {
+					js3.put("collect_cnt", product.getCollectNum());*/
+				   
+				   //Collect collect = new ProductController().findUserCollectInfo(uid, product.getId());
+				  // System.out.println(collect);
+					/*if(collect!=null) {
 						js3.put("is_collect", 1);
 					}else {
 						js3.put("is_collect", 0);
-					}
-					js2.put("play_cnt",auction.getAuctionUv());
+					}*/
+					/*js2.put("play_cnt",auction.getAuctionUv());
 					js2.put("start_time",product.getSaleTime());
 					js2.put("countdown", 50);
 					js2.put("auction_person", 3);
@@ -134,20 +222,24 @@ public class ProductController {
 					js2.put("auction_stage_ratio",auction.getAuctionStage());
 					js2.put("start_price", product.getpMarketPrice()*0.8);
 					js2.put("auction_person", 3);
-					js2.put("auction_price",auction.getAuctionPrice());
-					
-					js1.put("total", 10);
-					js1.put("num", 3);
-					js1.put("good_detail", js3);
-					js1.put("auction", js2);
-					js.put("ret", 0);
-					js.put("msg", "success");
-					js.put("products", js1);
-					
-				}*/
+					js2.put("auction_price",auction.getAuctionPrice());*/
+					 js1.put("total", 10);
+					 js1.put("num", 3);
+					 js1.put("good_detail", js3);
+					 js1.put("auction", js2);
+				}
+				js.put("ret", 0);
+				js.put("msg", "success");
+				js.put("products", js1);
+				
 			   //System.out.println(productResult);
 			    JSONArray jsArray= new JSONArray();
 			    jsArray.add(productList);
 			    return jsArray;
+		}
+		
+		public Collect findUserCollectInfo(int uid, int pid) {
+			Collect collect = collectManager.findUserCollectInfo(uid, pid);
+			return collect;
 		}
 }

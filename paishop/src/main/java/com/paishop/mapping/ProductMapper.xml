@@ -24,7 +24,10 @@
     <result column="auction_pv" property="auctionPv" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
-     
+    <association property="auction"
+                         javaType="com.paishop.entity.Auction"
+                              select="selectAuctionByPid"
+                              column="id"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, pf_one, s_id, s_username, p_name, p_num, p_auction_num, p_market_price, p_sale_price, media_main, 
@@ -35,9 +38,18 @@
     select 
     <include refid="Base_Column_List" />
     from t_product
-    where id = #{id,jdbcType=INTEGER}
+    
+    <!--  p.id, p.pf_one, p.s_id, p.s_username, p.p_name, p.p_num, p.p_auction_num, p.p_market_price, p.p_sale_price, p.media_main, 
+    p.media_detail, p.p_spec, p.p_desc, p.collect_num, p.star_num, p.status, p.sale_time, p.sale_num, 
+    p.count_comment, p.auction_pv, a.id, a.u_id, a.p_id, a.status
+    from t_product p left join  t_auction a on p.id = a.p_id    -->
+    where id=#{id}
   </select>
-  
+  <select id="selectAuctionByPid" resultType="com.paishop.entity.Auction" parameterType="java.lang.Integer">
+    select id, u_id, p_id, auction_pv, auction_price, auction_name, status
+    from t_auction 
+    where p_id=#{id}
+  </select>
   <select id="selectAllProducts" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
     <include refid="Base_Column_List" />
@@ -46,8 +58,9 @@
   </select>
   <select id="selectGoodsByName" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
-    <include refid="Base_Column_List" />
+   <include refid="Base_Column_List" />
     from t_product  
+    <!-- left join t_collect c on  -->
     where p_name like '%${keyword}%'   
     limit #{offset}, #{pageSize}
   </select>

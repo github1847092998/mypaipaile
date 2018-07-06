@@ -19,6 +19,7 @@
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    
   </resultMap>
   <sql id="Base_Column_List" >
     id, p_id, u_id, p_name,p_pic,  p_price, auction_name, auction_price, auction_uv, aution_pv, auction_stage, status,  
@@ -31,12 +32,12 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   
-  <select id="selectAuctionByPid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <!-- <select id="selectAuctionByPid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_auction 
     where p_id = #{pid,jdbcType=INTEGER}
-  </select>
+  </select> -->
   <select id="selectAuctionInfoByUser" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select  
     <include refid="Base_Column_List" />

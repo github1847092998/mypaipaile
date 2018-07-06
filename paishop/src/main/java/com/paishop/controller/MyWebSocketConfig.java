@@ -1,4 +1,4 @@
-package com.paishop.web.websocket;
+package com.paishop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -7,10 +7,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-/**
-	 * Component注解告诉SpringMVC该类是一个SpringIOC容器下管理的类
-	 * 其实@Controller, @Service, @Repository是@Component的细化
-	 */
+
 	@Component
 	@EnableWebSocket
 	public class MyWebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
@@ -21,9 +18,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 	    public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
 
 	        //添加websocket处理器，添加握手拦截器
-	        webSocketHandlerRegistry.addHandler(handler, "/search").addInterceptors(new MyHandShakeInterceptor());
+	        webSocketHandlerRegistry.addHandler(handler, "/websocket").addInterceptors(new MyHandShakeInterceptor());
 
 	        //添加websocket处理器，添加握手拦截器
-	        webSocketHandlerRegistry.addHandler(handler, "/ws/sockjs").addInterceptors(new MyHandShakeInterceptor()).withSockJS();
+	        webSocketHandlerRegistry.addHandler(handler, "/websocket/sockjs").addInterceptors(new MyHandShakeInterceptor()).withSockJS();
 	    }
 	}

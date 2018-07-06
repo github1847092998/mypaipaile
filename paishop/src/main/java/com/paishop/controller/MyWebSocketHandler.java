@@ -1,4 +1,4 @@
-package com.paishop.web.websocket;
+package com.paishop.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,7 +50,7 @@ public class MyWebSocketHandler implements WebSocketHandler{
 
         if(webSocketMessage.getPayloadLength()==0)return;
 
-        //得到Socket通道中的数据并转化为Message对象
+        //得到Socket通道中的数据并转化为Product对象
         Product product=new Gson().fromJson(webSocketMessage.getPayload().toString(),Product.class);
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -66,16 +66,7 @@ public class MyWebSocketHandler implements WebSocketHandler{
 
     }
 
-    /**
-     * 在此刷新页面就相当于断开WebSocket连接,原本在静态变量userSocketSessionMap中的
-     * WebSocketSession会变成关闭状态(close)，但是刷新后的第二次连接服务器创建的
-     * 新WebSocketSession(open状态)又不会加入到userSocketSessionMap中,所以这样就无法发送消息
-     * 因此应当在关闭连接这个切面增加去除userSocketSessionMap中当前处于close状态的WebSocketSession，
-     * 让新创建的WebSocketSession(open状态)可以加入到userSocketSessionMap中
-     * @param webSocketSession
-     * @param closeStatus
-     * @throws Exception
-     */
+   
     public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {
 
         System.out.println("WebSocket:"+webSocketSession.getAttributes().get("uid")+"close connection");

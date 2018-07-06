@@ -46,6 +46,8 @@ public class Product {
     private Date createTime;
 
     private Date modifyTime;
+    
+    private Auction auction;
 
     public Integer getId() {
         return id;
@@ -225,4 +227,14 @@ public class Product {
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
+	public Auction getAuction() {
+		return auction;
+	}
+
+	public void setAuction(Auction auction) {
+		this.auction = auction;
+	}
+    
+    
 }

@@ -24,14 +24,16 @@ private CollectMapper collectMapper;
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public Collect findCollectInfoByUid(int uid) {
-		Collect collectInfo = collectMapper.findCollectInfoByUid(uid);
-		return collectInfo;
-	}
+	
 
 	public void modifyCollectInfo(Collect record) {
 		
 		
+	}
+
+	public Collect findUserCollectInfo(int uid, int pid) {
+		Collect collect = collectMapper.selectUserCollectInfo(uid, pid);
+		return collect;
 	}
      
 }

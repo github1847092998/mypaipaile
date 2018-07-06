@@ -14,7 +14,7 @@ public interface ProductMapper {
 
     int insertSelective(Product record);
 
-    Product selectByPrimaryKey(Integer id);
+    Product selectByPrimaryKey(@Param("id")Integer id);
     
     List<Product> selectAllProducts(@Param("offset") int offset, @Param("pageSize") int pageSize);
     
