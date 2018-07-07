@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paishop.dao.AuctionMapper" >
+  <resultMap id="BaseResultMap" type="com.paishop.entity.Auction" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="aution_pv" property="autionPv" jdbcType="INTEGER" />
+    <result column="auction_price" property="auctionPrice" jdbcType="REAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="auction_name" property="auctionName" jdbcType="VARCHAR" />
+    <result column="p_price" property="pPrice" jdbcType="REAL" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="auction_time" property="auctionTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, p_id, u_id, aution_pv, auction_price, status, auction_name, p_price, start_time, 
+    auction_time, end_time, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_auction
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_auction
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paishop.entity.Auction" >
+    insert into t_auction (id, p_id, u_id, 
+      aution_pv, auction_price, status, 
+      auction_name, p_price, start_time, 
+      auction_time, end_time, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{pId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, 
+      #{autionPv,jdbcType=INTEGER}, #{auctionPrice,jdbcType=REAL}, #{status,jdbcType=INTEGER}, 
+      #{auctionName,jdbcType=VARCHAR}, #{pPrice,jdbcType=REAL}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{auctionTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.paishop.entity.Auction" >
+    insert into t_auction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="uId != null" >
+        u_id,
+      </if>
+      <if test="autionPv != null" >
+        aution_pv,
+      </if>
+      <if test="auctionPrice != null" >
+        auction_price,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="auctionName != null" >
+        auction_name,
+      </if>
+      <if test="pPrice != null" >
+        p_price,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="auctionTime != null" >
+        auction_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null" >
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="autionPv != null" >
+        #{autionPv,jdbcType=INTEGER},
+      </if>
+      <if test="auctionPrice != null" >
+        #{auctionPrice,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="auctionName != null" >
+        #{auctionName,jdbcType=VARCHAR},
+      </if>
+      <if test="pPrice != null" >
+        #{pPrice,jdbcType=REAL},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auctionTime != null" >
+        #{auctionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.paishop.entity.Auction" >
+    update t_auction
+    <set >
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null" >
+        u_id = #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="autionPv != null" >
+        aution_pv = #{autionPv,jdbcType=INTEGER},
+      </if>
+      <if test="auctionPrice != null" >
+        auction_price = #{auctionPrice,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="auctionName != null" >
+        auction_name = #{auctionName,jdbcType=VARCHAR},
+      </if>
+      <if test="pPrice != null" >
+        p_price = #{pPrice,jdbcType=REAL},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auctionTime != null" >
+        auction_time = #{auctionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paishop.entity.Auction" >
+    update t_auction
+    set p_id = #{pId,jdbcType=INTEGER},
+      u_id = #{uId,jdbcType=INTEGER},
+      aution_pv = #{autionPv,jdbcType=INTEGER},
+      auction_price = #{auctionPrice,jdbcType=REAL},
+      status = #{status,jdbcType=INTEGER},
+      auction_name = #{auctionName,jdbcType=VARCHAR},
+      p_price = #{pPrice,jdbcType=REAL},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      auction_time = #{auctionTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

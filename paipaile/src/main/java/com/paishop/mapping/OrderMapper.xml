@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paishop.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.paishop.entity.Order" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="market_price" property="marketPrice" jdbcType="REAL" />
+    <result column="buy_price" property="buyPrice" jdbcType="REAL" />
+    <result column="o_status" property="oStatus" jdbcType="INTEGER" />
+    <result column="o_address" property="oAddress" jdbcType="VARCHAR" />
+    <result column="user_remark" property="userRemark" jdbcType="VARCHAR" />
+    <result column="o_createtime" property="oCreatetime" jdbcType="TIMESTAMP" />
+    <result column="o_modifytime" property="oModifytime" jdbcType="TIMESTAMP" />
+    <association property="product"
+                          javaType="com.paishop.entity.Product"
+                          select="selectProductByOrder"
+                          column="p_id"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, p_id, u_id, market_price, buy_price, o_status, o_address, user_remark, o_createtime, 
+    o_modifytime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectProductByOrder" resultType="com.paishop.entity.Product" parameterType="java.lang.Integer" >
+    select p_id, s_id, p_name, p_num, p_market_price, p_sale_price, media_main, media_detail
+    from t_product
+    where p_id = #{pId}
+  </select>
+  <select id="selectAllOrderByUser" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where u_id = #{uId,jdbcType=INTEGER} order by o_createtime desc limit #{offset}, #{pageSize}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paishop.entity.Order" >
+    insert into t_order (id, p_id, u_id, 
+      market_price, buy_price, o_status, 
+      o_address, user_remark, o_createtime, 
+      o_modifytime)
+    values (#{id,jdbcType=INTEGER}, #{pId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, 
+      #{marketPrice,jdbcType=REAL}, #{buyPrice,jdbcType=REAL}, #{oStatus,jdbcType=INTEGER}, 
+      #{oAddress,jdbcType=VARCHAR}, #{userRemark,jdbcType=VARCHAR}, #{oCreatetime,jdbcType=TIMESTAMP}, 
+      #{oModifytime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.paishop.entity.Order" >
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="uId != null" >
+        u_id,
+      </if>
+      <if test="marketPrice != null" >
+        market_price,
+      </if>
+      <if test="buyPrice != null" >
+        buy_price,
+      </if>
+      <if test="oStatus != null" >
+        o_status,
+      </if>
+      <if test="oAddress != null" >
+        o_address,
+      </if>
+      <if test="userRemark != null" >
+        user_remark,
+      </if>
+      <if test="oCreatetime != null" >
+        o_createtime,
+      </if>
+      <if test="oModifytime != null" >
+        o_modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null" >
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=REAL},
+      </if>
+      <if test="buyPrice != null" >
+        #{buyPrice,jdbcType=REAL},
+      </if>
+      <if test="oStatus != null" >
+        #{oStatus,jdbcType=INTEGER},
+      </if>
+      <if test="oAddress != null" >
+        #{oAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userRemark != null" >
+        #{userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="oCreatetime != null" >
+        #{oCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oModifytime != null" >
+        #{oModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.paishop.entity.Order" >
+    update t_order
+    <set >
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null" >
+        u_id = #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="marketPrice != null" >
+        market_price = #{marketPrice,jdbcType=REAL},
+      </if>
+      <if test="buyPrice != null" >
+        buy_price = #{buyPrice,jdbcType=REAL},
+      </if>
+      <if test="oStatus != null" >
+        o_status = #{oStatus,jdbcType=INTEGER},
+      </if>
+      <if test="oAddress != null" >
+        o_address = #{oAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userRemark != null" >
+        user_remark = #{userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="oCreatetime != null" >
+        o_createtime = #{oCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oModifytime != null" >
+        o_modifytime = #{oModifytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paishop.entity.Order" >
+    update t_order
+    set p_id = #{pId,jdbcType=INTEGER},
+      u_id = #{uId,jdbcType=INTEGER},
+      market_price = #{marketPrice,jdbcType=REAL},
+      buy_price = #{buyPrice,jdbcType=REAL},
+      o_status = #{oStatus,jdbcType=INTEGER},
+      o_address = #{oAddress,jdbcType=VARCHAR},
+      user_remark = #{userRemark,jdbcType=VARCHAR},
+      o_createtime = #{oCreatetime,jdbcType=TIMESTAMP},
+      o_modifytime = #{oModifytime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

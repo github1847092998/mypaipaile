@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.paishop.dao.SalerMapper" >
+  <resultMap id="BaseResultMap" type="com.paishop.entity.Saler" >
+    <id column="s_id" property="sId" jdbcType="INTEGER" />
+    <result column="wx_openid" property="wxOpenid" jdbcType="VARCHAR" />
+    <result column="s_telephone" property="sTelephone" jdbcType="VARCHAR" />
+    <result column="s_money" property="sMoney" jdbcType="REAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    s_id, wx_openid, s_telephone, s_money, create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_saler
+    where s_id = #{sId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_saler
+    where s_id = #{sId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paishop.entity.Saler" >
+    insert into t_saler (s_id, wx_openid, s_telephone, 
+      s_money, create_time, modify_time
+      )
+    values (#{sId,jdbcType=INTEGER}, #{wxOpenid,jdbcType=VARCHAR}, #{sTelephone,jdbcType=VARCHAR}, 
+      #{sMoney,jdbcType=REAL}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.paishop.entity.Saler" >
+    insert into t_saler
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sId != null" >
+        s_id,
+      </if>
+      <if test="wxOpenid != null" >
+        wx_openid,
+      </if>
+      <if test="sTelephone != null" >
+        s_telephone,
+      </if>
+      <if test="sMoney != null" >
+        s_money,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sId != null" >
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="wxOpenid != null" >
+        #{wxOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="sTelephone != null" >
+        #{sTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="sMoney != null" >
+        #{sMoney,jdbcType=REAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.paishop.entity.Saler" >
+    update t_saler
+    <set >
+      <if test="wxOpenid != null" >
+        wx_openid = #{wxOpenid,jdbcType=VARCHAR},
+      </if>
+      <if test="sTelephone != null" >
+        s_telephone = #{sTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="sMoney != null" >
+        s_money = #{sMoney,jdbcType=REAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paishop.entity.Saler" >
+    update t_saler
+    set wx_openid = #{wxOpenid,jdbcType=VARCHAR},
+      s_telephone = #{sTelephone,jdbcType=VARCHAR},
+      s_money = #{sMoney,jdbcType=REAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+</mapper>
