@@ -22,8 +22,8 @@ public class MyHandshakeInterceptor extends HttpSessionHandshakeInterceptor{
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
             HttpSession session = servletRequest.getServletRequest().getSession(false);
             if (session != null) {
-            	String data = session.getAttribute("data").toString();
-            	attributes.put("data",data);
+            	String username = session.getAttribute("username").toString();
+            	attributes.put("username",username);
             }
         }
         

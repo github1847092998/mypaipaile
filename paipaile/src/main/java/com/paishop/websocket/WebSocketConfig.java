@@ -16,15 +16,23 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
 	private static final long heartbeatTime =  60000L; // 1 minute
 	
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-    	registry.addHandler(myHandler(), "/myHandler").addInterceptors(new MyHandshakeInterceptor());
-    	   
-    	registry.addHandler(myHandler(), "/sockjs/myHandler").addInterceptors(new MyHandshakeInterceptor())
-    		.withSockJS().setHeartbeatTime(heartbeatTime);
+    	try {
+    		registry.addHandler(myHandler(), "/myHandler").addInterceptors(new MyHandshakeInterceptor());
+     	   
+        	registry.addHandler(myHandler(), "/sockjs/myHandler").addInterceptors(new MyHandshakeInterceptor())
+        		.withSockJS().setHeartbeatTime(heartbeatTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			
+		}
+    	
     }
 
     @Bean
     public WebSocketHandler myHandler() {
-        return new MyHandler();
+    	
+    	return new MyHandler();
     }
 
 }

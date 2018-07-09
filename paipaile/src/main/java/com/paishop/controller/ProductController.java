@@ -35,8 +35,8 @@ public class ProductController {
 	private ProductManager productManager;
 	@Autowired
 	private AuctionManager auctionManager;
-	@Autowired
-	private MyHandler handler;
+	//@Autowired
+	//private MyHandler handler;
 	//首页商品查询
 	@RequestMapping(value = "/getAllGoods", method = RequestMethod.GET)
 	public @ResponseBody JSONArray showIndex(@RequestParam int offset, @RequestParam int pageSize) {
@@ -102,7 +102,7 @@ public class ProductController {
 		}
 		
 		 //商品详情查询
-		@RequestMapping(value = "/auction", method = RequestMethod.GET)
+		@RequestMapping(value = "/auction", method = RequestMethod.POST)
 		public @ResponseBody JSONObject auction(@RequestParam int good_id) {
 			    Map<String, Object> map= new HashMap<String, Object>();
 			    Product product = productManager.findProductById(good_id);

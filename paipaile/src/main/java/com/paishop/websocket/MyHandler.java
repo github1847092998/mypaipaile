@@ -82,6 +82,13 @@ public class MyHandler extends TextWebSocketHandler implements Serializable{
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }finally {
+            	try {
+					user.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         }
     }
@@ -92,9 +99,9 @@ public class MyHandler extends TextWebSocketHandler implements Serializable{
      * @param userCd
      * @param message
      */
-    public void sendMessageToUser(String userCd, TextMessage message) {
+    public void sendMessageToUser(String username, TextMessage message) {
         for (WebSocketSession user : users) {
-            if (userCd.equals(user.getAttributes().get("WS_USER_CD"))) { // 搴斾粠session鍙朇D瀵规瘮
+            if (username.equals(user.getAttributes().get("username"))) { // 搴斾粠session鍙朇D瀵规瘮
                 try {
                     if (user.isOpen()) {
                         user.sendMessage(message);

@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	}
     	
         var ws = null;
-        var target = 'ws://localhost:8080/paishop11/myHandler';
+        var target = 'ws://localhost:8080/paipaile/myHandler';
 
 		// 创建WebSocket连接
         function connect() {
@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             } else {
             	// ie10以下
             	if(ws==null) {
-            		target = window.location.protocol + '//' + 'localhost:8080/paishop11/sockjs/myHandler';
+            		target = window.location.protocol + '//' + 'localhost:8080/paipaile/sockjs/myHandler';
                 	ws = new SockJS(target);
             	} 
             }  
