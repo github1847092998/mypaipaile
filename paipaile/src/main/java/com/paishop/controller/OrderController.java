@@ -71,4 +71,23 @@ public class OrderController {
 		return null;
 		
 	}
+    //查看用户的所有订单
+    @RequestMapping(value = "/getAllOrders", method = RequestMethod.GET)
+	public @ResponseBody JSONObject getAllOrders(@RequestParam int uid, @RequestParam String wx_openid) {
+		Map<String, Object> orderMap = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Order> orderList = orderManager.findAllOrderByUser(uid);
+		for (Order order : orderList) {
+			orderMap.put("order_id", order.getId());
+			orderMap.put("good_id", order.getProduct().getpId());
+			orderMap.put("good_title", order.getProduct().getpName());
+			orderMap.put("good_market_price", order.getMarketPrice());
+			orderMap.put("good_auction_price", order.getBuyPrice());
+			orderMap.put("order_status", order.getoStatus());
+		}
+		map.put("order", orderMap);
+		JSONObject js= JSONObject.fromObject(map);
+		return js;
+		
+	}
 }

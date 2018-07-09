@@ -16,7 +16,7 @@ public interface OrderManager {
 
     public boolean updateOrderInfo(Order record);
 
-    public  List<Order> findAllOrderByUser(int uId, int offset, int pageSize);
+    public  List<Order> findAllOrderByUser(int uId);
     
     public  List<Order> findUserOrderByUId(int uId, int offset, int pageSize);
 }

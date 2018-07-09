@@ -30,6 +30,8 @@ public class Product {
     private Date createTim;
 
     private Date modifyTime;
+    
+    private Auction auction;
 
     public Integer getpId() {
         return pId;
@@ -142,4 +144,13 @@ public class Product {
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
+	public Auction getAuction() {
+		return auction;
+	}
+
+	public void setAuction(Auction auction) {
+		this.auction = auction;
+	}
+    
 }

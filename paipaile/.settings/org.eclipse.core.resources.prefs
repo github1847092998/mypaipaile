@@ -6,5 +6,6 @@ encoding//src/main/java/com/paishop/manager/ProductManager.java=UTF-8
 encoding//src/main/java/com/paishop/manager/UserManager.java=UTF-8
 encoding//src/main/java/com/paishop/manager/impl/OrderManagerImpl.java=UTF-8
 encoding//src/main/java/com/paishop/manager/impl/UserManagerImpl.java=UTF-8
+encoding//src/main/java/com/paishop/websocket/MyHandler.java=UTF-8
 encoding//src/main/webapp/index.jsp=UTF-8
 encoding/<project>=GBK

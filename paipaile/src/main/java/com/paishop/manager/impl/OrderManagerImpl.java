@@ -36,11 +36,9 @@ public class OrderManagerImpl implements OrderManager {
 		return false;
 	}
 
-	public List<Order> findAllOrderByUser(int uId, int offset, int pageSize) {
+	public List<Order> findAllOrderByUser(int uId) {
 		Map<String, Object> map= new HashMap<String, Object>();
 		map.put("uId", uId);
-		map.put("offset", offset);
-		map.put("pageSize", pageSize);
 		List<Order> orderList = orderMapper.selectAllOrderByUser(map);
 		return orderList;
 	}

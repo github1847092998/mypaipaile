@@ -12,10 +12,11 @@
     <result column="user_remark" property="userRemark" jdbcType="VARCHAR" />
     <result column="o_createtime" property="oCreatetime" jdbcType="TIMESTAMP" />
     <result column="o_modifytime" property="oModifytime" jdbcType="TIMESTAMP" />
-    <association property="product"
-                          javaType="com.paishop.entity.Product"
-                          select="selectProductByOrder"
-                          column="p_id"/>
+    <association property="product" javaType="com.paishop.entity.Product">
+         <id column="p_id" property="pId" jdbcType="INTEGER" />
+         <result column="s_id" property="sId" jdbcType="INTEGER" />
+         <result column="p_name" property="pName" jdbcType="VARCHAR" />        
+     </association>
   </resultMap>
   <sql id="Base_Column_List" >
     id, p_id, u_id, market_price, buy_price, o_status, o_address, user_remark, o_createtime, 
@@ -33,10 +34,9 @@
     where p_id = #{pId}
   </select>
   <select id="selectAllOrderByUser" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_order
-    where u_id = #{uId,jdbcType=INTEGER} order by o_createtime desc limit #{offset}, #{pageSize}
+    select o.*, p.*
+    from t_order o, t_product p
+    where o.p_id=p.p_id and o.u_id = #{uId,jdbcType=INTEGER} order by o.o_createtime desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_order

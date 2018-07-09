@@ -16,16 +16,24 @@
     <result column="sale_num" property="saleNum" jdbcType="INTEGER" />
     <result column="create_tim" property="createTim" jdbcType="TIMESTAMP" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <association property="auction" javaType="com.paishop.entity.Auction">
+       <id column="id" property="id" jdbcType="INTEGER" />
+       <result column="u_id" property="uId" jdbcType="INTEGER" />
+       <result column="aution_pv" property="autionPv" jdbcType="INTEGER" />
+       <result column="auction_price" property="auctionPrice" jdbcType="REAL" />
+       <result column="auction_name" property="auctionName" jdbcType="VARCHAR" />
+       <result column="status" property="status" jdbcType="INTEGER" />
+       <result column="auction_time" property="auctionTime" jdbcType="TIMESTAMP" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List" >
     p_id, s_id, p_name, p_num, p_market_price, p_sale_price, media_main, media_detail, 
     p_desc, status, sale_time, sale_num, create_tim, modify_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_product
-    where p_id = #{pId,jdbcType=INTEGER}
+    select  p.*, a.id, a.u_id, a.aution_pv, a.auction_price, a.auction_name, a.status,a.auction_time
+    from t_product p, t_auction a
+    where p.p_id=a.p_id and p.p_id = #{pId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_product

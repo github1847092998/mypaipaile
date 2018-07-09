@@ -19,10 +19,10 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring.xml,classpath:spring-mybatis.xml</param-value>
 	</context-param>
-	<servlet>
+	<!-- <servlet>
     <servlet-name>dwr-invoker</servlet-name>
-   <!--  <display-name>DWR Servlet</display-name>
-    <description>Direct Web Remoter Servlet</description> -->
+    <display-name>DWR Servlet</display-name>
+    <description>Direct Web Remoter Servlet</description>
     <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
        <init-param> 
        <param-name> classes </param-name>
@@ -55,7 +55,7 @@
   <servlet-mapping>
     <servlet-name>dwr-invoker</servlet-name>
     <url-pattern>/dwr/*</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
 	<filter>
 		<description>字符集过滤器</description>
 		<filter-name>encodingFilter</filter-name>
@@ -86,13 +86,16 @@
 		<init-param>
 			<description>spring mvc 配置文件</description>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring-mvc.xml</param-value>
+			<param-value>classpath*:spring-mvc.xml</param-value>
+			<!-- <param-value>classpath:spring-mvc.xml</param-value> -->
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>springMvc</servlet-name>
-		<url-pattern>*.action</url-pattern>
+		<!-- 使用websocket时用的 -->
+		<url-pattern>/</url-pattern>
+		<!-- <url-pattern>*.action</url-pattern> -->
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>/index.jsp</welcome-file>

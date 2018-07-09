@@ -120,7 +120,7 @@ public class UserController {
 
 	}
 	
-	     // 查询用户的所有订单
+	    /* // 查询用户的所有订单
 		@RequestMapping(value = "/getAllOrders", method = RequestMethod.GET)
 		public @ResponseBody JSONArray getAllOrders(@RequestParam("uid") int uid, 
 				   @RequestParam("wx_openid") String wx_openid, @RequestParam("offset") int offset,
@@ -128,7 +128,7 @@ public class UserController {
 			// System.out.println(uId+":"+oStatus+":"+offset);
 			Map<String, Object> map = new HashMap<String, Object>();
 			
-			List<Order> orderList = orderManager.findAllOrderByUser(uid, offset, pageSize);
+			List<Order> orderList = orderManager.findAllOrderByUser(uid);
 			Order order1=new Order();
 			for (Order order : orderList) {
 				map.put("order_id", order.getId());
@@ -145,6 +145,6 @@ public class UserController {
 			//System.out.println(map.get("order1"));
 			JSONArray jsArray = JSONArray.fromObject(map);
 			return jsArray;
-		}
+		}*/
 
 }
