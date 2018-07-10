@@ -9,8 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,8 +38,8 @@ public class LoginController {
 	   //String code = request.getParameter("code");
 	   //System.out.println(code);
 	   //String state = request.getParameter("state");
-	   String appid="wxf0699dbe93322d73";
-	   String secret="1078842306d035ad36bc68a3196ce045";
+	   String appid="xxxxxxxxxxxxxxxx";
+	   String secret="xxxxxxxxxxxxxxxx";
 	   String res=code;
 	  String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
        url = url.replace("APPID",appid);

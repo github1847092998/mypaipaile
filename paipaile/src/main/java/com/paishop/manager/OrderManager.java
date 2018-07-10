@@ -8,13 +8,13 @@ import com.paishop.entity.Order;
 
 public interface OrderManager {
 	
-	public boolean deleteById(Integer id);
+	public int deleteById(Integer id);
 
-	public boolean addOrderInfo(Order record);
+	public int addOrderInfo(Order record);
 
 	public  Order findOrderById(Integer id);
 
-    public boolean updateOrderInfo(Order record);
+    public int updateOrderInfo(Order record);
 
     public  List<Order> findAllOrderByUser(int uId);
     

@@ -3,7 +3,7 @@ package com.paishop.entity;
 import java.util.Date;
 
 public class Order {
-    private Integer id;
+    private String id;
 
     private Integer pId;
 
@@ -27,11 +27,11 @@ public class Order {
     
     private User user;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -16,14 +16,14 @@ public class OrderManagerImpl implements OrderManager {
 	@Autowired
 	private OrderMapper orderMapper;
 	
-	public boolean deleteById(Integer id) {
+	public int deleteById(Integer id) {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
-	public boolean addOrderInfo(Order record) {
-		orderMapper.insertSelective(record);
-		return false;
+	public int addOrderInfo(Order record) {
+		int i = orderMapper.insertSelective(record);
+		return i;
 	}
 
 	public Order findOrderById(Integer id) {
@@ -31,9 +31,9 @@ public class OrderManagerImpl implements OrderManager {
 		return null;
 	}
 
-	public boolean updateOrderInfo(Order record) {
+	public int updateOrderInfo(Order record) {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
 	public List<Order> findAllOrderByUser(int uId) {
