@@ -103,6 +103,28 @@ public class OrderController {
 		
 	}
     
+  //确认收货
+    @RequestMapping(value = "/receiveGood", method = RequestMethod.GET)
+	public @ResponseBody JSONObject receiveGood(@RequestParam int uid, @RequestParam String wx_openid,
+			@RequestParam int oid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Order order = new Order();
+		order.setoStatus(20);
+		order.setoModifytime(new Date());
+		order.setId(""+oid);
+		int i = orderManager.updateOrderInfo(order);
+		if(i==1) {
+			map.put("ret", 1);
+			map.put("msg", "收货成功");
+		}else {
+			map.put("ret", 0);
+			map.put("msg", "收货失败");
+		}
+		JSONObject js= JSONObject.fromObject(map);
+		return js;
+		
+	}
+    
     //支付
     @RequestMapping(value = "/pay", produces = "text/html;charset=UTF-8")
     public @ResponseBody String pay(String code, ModelMap model, HttpServletRequest request) {

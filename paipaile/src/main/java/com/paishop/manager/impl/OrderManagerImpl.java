@@ -32,8 +32,8 @@ public class OrderManagerImpl implements OrderManager {
 	}
 
 	public int updateOrderInfo(Order record) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = orderMapper.updateByPrimaryKeySelective(record);
+		return i;
 	}
 
 	public List<Order> findAllOrderByUser(int uId) {
