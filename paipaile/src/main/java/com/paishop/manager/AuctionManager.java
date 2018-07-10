@@ -8,7 +8,7 @@ public interface AuctionManager {
 	
 	public void deleteAuctionById(Integer id);
 
-    public void  addAuctionInfo(Auction record);
+    public int  addAuctionInfo(Auction record);
 
     public Auction findAuctionInfo(Integer id);
     
@@ -16,5 +16,5 @@ public interface AuctionManager {
     
     public List<Auction> findAuctionInfoByUser(int uId, int offset, int pageSize);
 
-    public void modifyAuctionInfo(Auction record);
+    public int modifyAuctionInfo(Auction record);
 }

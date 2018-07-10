@@ -32,6 +32,8 @@ public class Product {
     private Date modifyTime;
     
     private Auction auction;
+    
+    
 
     public Integer getpId() {
         return pId;
@@ -152,5 +154,7 @@ public class Product {
 	public void setAuction(Auction auction) {
 		this.auction = auction;
 	}
+	
+	
     
 }

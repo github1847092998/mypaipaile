@@ -1,6 +1,8 @@
 package com.paishop.manager.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +19,14 @@ public class ProductManagerImpl implements ProductManager{
 	@Autowired
 	private ProductMapper productMapper;
 
-	public boolean deleteProductById(Integer id) {
+	public int deleteProductById(Integer id) {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
-	public boolean addProduct(Product product) {
+	public int addProduct(Product product) {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
 	public Product findProductById(Integer id) {
@@ -32,9 +34,14 @@ public class ProductManagerImpl implements ProductManager{
 		return product;
 	}
 
-	public List<Product> findProductsBySaler(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Product> findProductsBySaler(Integer sid, int status, int offset, int pageSize) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sid", sid);
+		map.put("status", status);
+		map.put("offset", offset);
+		map.put("pageSize", pageSize);
+		List<Product> productList = productMapper.selectProductsBySaler(map);
+		return productList;
 	}
 
 	public List<Product> findAllProducts(int offset, int pageSize) {
@@ -43,8 +50,9 @@ public class ProductManagerImpl implements ProductManager{
 		return null;
 	}
 
-	public void modifyProductInfo(Product product) {
-		productMapper.updateByPrimaryKeySelective(product);
+	public int modifyProductInfo(Product product) {
+		int i = productMapper.updateByPrimaryKeySelective(product);
+		return i;
 	}
 
 	public List<Product> findGoodsByName(String keyword, int offset, int pageSize) {

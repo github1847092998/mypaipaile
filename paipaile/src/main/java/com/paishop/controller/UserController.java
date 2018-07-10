@@ -3,6 +3,7 @@ package com.paishop.controller;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,31 +47,38 @@ public class UserController {
 	private AuctionManager auctionManager;
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
-	public @ResponseBody String addUser(@RequestParam String openid, @RequestParam String unionid,
-			@RequestParam String nickname, @RequestParam int gender, @RequestParam int city, @RequestParam int province,
-			@RequestParam int country, @RequestParam String avatarUrl) {
-		String res;
+	public @ResponseBody JSONObject addUser(@RequestParam String openid, @RequestParam String unionid,
+			@RequestParam String nickname, @RequestParam int gender, @RequestParam String area, 
+			@RequestParam String avatar_url,@RequestParam String telephone, 
+			@RequestParam JSONArray detailAddress ) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		User user = new User();
-
-		user.setAvatarUrl(avatarUrl);
-
-		boolean bo = userManager.addUser(user);
-		if (bo == true) {
-			res = "成功";
-			return res;
+        user.setWxOpenid(openid);
+        user.setNicknae(nickname);
+        user.setGender(gender);
+        user.setArea(area);
+		user.setAvatarUrl(avatar_url);
+        //user.setTelphone(telephone);
+        //user.setDetailAddress(detailAddress.toString());
+		int i = userManager.addUser(user);
+		if (i == 1) {
+			map.put("ret", 1);
+			map.put("msg", "添加成功");
 		} else {
-			res = "失败";
-			return res;
+			map.put("ret", 0);
+			map.put("msg", "添加失败");
 		}
+		JSONObject js = JSONObject.fromObject(map);
+		return js;
 	}
 
 	// 个人中心页面
 	@RequestMapping(value = "/findUserAllInfo", method = RequestMethod.GET)
-	public @ResponseBody JSONObject findUserAllInfo(@RequestParam("uId") int uId, @RequestParam("openid") String openid,
+	public @ResponseBody JSONObject findUserAllInfo(@RequestParam("uid") int uid, @RequestParam("openid") String openid,
 			@RequestParam("oStatus") int oStatus, @RequestParam("offset") int offset,
 			@RequestParam("pageSize") int pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		User user = userManager.findUserByOpenid(openid);
+		User user = userManager.findUserByUid(uid);
 		map.put("nickname", user.getNicknae());
 		map.put("avatarUrl", user.getAvatarUrl());
 		JSONObject js = JSONObject.fromObject(map);
@@ -82,7 +90,7 @@ public class UserController {
 	public @ResponseBody JSONArray getAddress(@RequestParam("uid") int uid, @RequestParam("openid") String openid) {
 		// System.out.println(uId+":"+oStatus+":"+offset);
 		Map<String, Object> map = new HashMap<String, Object>();
-		User user = userManager.findUserByOpenid(openid);
+		User user = userManager.findUserByUid(uid);
 		JSONArray js = JSONArray.fromObject(user.getDetailAddress());
 		for (Object object : js) {
 			JSONObject jsObject = JSONObject.fromObject(object);
@@ -98,26 +106,45 @@ public class UserController {
 
 	// 添加收货地址
 	@RequestMapping(value = "/addAddress", method = RequestMethod.GET)
-	public @ResponseBody String addAddress(@RequestParam("uid") int uid, @RequestParam("wx_openid") String wx_openid,
+	public @ResponseBody JSONObject addAddress(@RequestParam("uid") int uid, @RequestParam("wx_openid") String wx_openid,
 			@RequestParam("receiver") String receiver, @RequestParam("phone") String phone,
 			@RequestParam("region") String region, @RequestParam("detail_address") String detail_address,
 			@RequestParam("default_address") String default_address) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map1 = new HashMap<String, Object>();
 		User user = new User();
 		map.put("receiver", receiver);
 		map.put("phone", phone);
 		map.put("region", region);
 		map.put("detail_address", detail_address);
 		map.put("default_address", default_address);
-		user.setDetailAddress(map.toString());
-		boolean bo = userManager.modifyUser(user);
-		if (bo == true) {
-			return "添加收货成功";
+		String address = this.findUserAddress(uid);
+		StringBuffer strBuffer = new StringBuffer();
+		strBuffer.append(address).append(map.toString());
+		user.setDetailAddress(strBuffer.toString());
+		
+		System.out.println(strBuffer.toString());
+		user.setuId(uid);
+		int i = userManager.modifyUser(user);
+		if (i == 1) {
+			map1.put("ret", 1);
+			map1.put("msg", "添加地址成功");
 		} else {
-			return "添加地址失败";
+			map1.put("ret", 0);
+			map1.put("msg", "添加地址失败");
 		}
-
+		JSONObject js = JSONObject.fromObject(map1);
+		return js;
+	}
+	
+	//找到用户已经有的地址
+	public String findUserAddress(int uid ) {
+		User user = userManager.findUserByUid(uid);
+		System.out.println(user);
+		String detailAddress=user.getDetailAddress();
+		System.out.println(detailAddress);
+		return detailAddress;
 	}
 	
 	    /* // 查询用户的所有订单

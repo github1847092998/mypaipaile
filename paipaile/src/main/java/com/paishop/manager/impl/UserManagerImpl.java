@@ -14,27 +14,25 @@ public class UserManagerImpl implements UserManager{
 	@Autowired
 	private UserMapper userMapper;
 
-	public boolean addUser(User user) {
+	public int addUser(User user) {
 		/* boolean b = userMapper.insertSelective(user);
 		return b;*/
-		return false;
+		return 0;
 	}
     //淇敼鐢ㄦ埛鏀惰揣鍦板潃锛氫粠null鍒扮幇鍦ㄧ殑鍊�
-	public boolean modifyUser(User user) {
-		/*boolean b = userMapper.updateByPrimaryKeySelective(user);
-		return b;*/
-		return false;
+	public int modifyUser(User user) {
+		int i = userMapper.updateByPrimaryKeySelective(user);
+		return i;
 	}
 
-	public void deleteUserById(int userId) {
+	public int deleteUserById(int userId) {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
 
-	public User findUserByOpenid(String openid) {
-		/*User user = userMapper.selectByOpenid(openid);
-		return user;*/
-		return null;
+	public User findUserByUid(int uid) {
+		User user = userMapper.selectByPrimaryKey(uid);
+		return user;
 	}
 
 	/*public List<User> findAllUserByName(String username) {
@@ -45,10 +43,10 @@ public class UserManagerImpl implements UserManager{
 		// TODO Auto-generated method stub
 		return null;
 	}*/
-	public void modifyUserAddress(User user) {
-		 userMapper.updateByPrimaryKeySelective(user);
-		
-	}
+	/*public int modifyUserAddress(User user) {
+		 int i = userMapper.updateByPrimaryKeySelective(user);
+		return i;
+	}*/
 	
 
 

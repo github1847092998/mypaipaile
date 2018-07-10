@@ -19,9 +19,9 @@ public class AuctionManagerImpl implements AuctionManager {
 
 	}
 
-	public void addAuctionInfo(Auction record) {
-		
-
+	public int addAuctionInfo(Auction record) {
+		int i = auctionMapper.insertSelective(record);
+        return i;
 	}
 
 	public Auction findAuctionInfo(Integer id) {
@@ -29,8 +29,9 @@ public class AuctionManagerImpl implements AuctionManager {
 		return null;
 	}
 
-	public void modifyAuctionInfo(Auction record) {
-		// TODO Auto-generated method stub
+	public int modifyAuctionInfo(Auction record) {
+		int i = auctionMapper.updateByPrimaryKey(record);
+		return i;
 
 	}
 

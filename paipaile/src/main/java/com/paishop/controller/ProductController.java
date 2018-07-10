@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -19,8 +21,10 @@ import org.springframework.web.socket.TextMessage;
 
 import com.paishop.entity.Auction;
 import com.paishop.entity.Product;
+import com.paishop.entity.User;
 import com.paishop.manager.AuctionManager;
 import com.paishop.manager.ProductManager;
+import com.paishop.manager.UserManager;
 import com.paishop.websocket.MyHandler;
 
 import net.sf.json.JSON;
@@ -35,6 +39,8 @@ public class ProductController {
 	private ProductManager productManager;
 	@Autowired
 	private AuctionManager auctionManager;
+	@Autowired
+	private UserManager userManager;
 	//@Autowired
 	//private MyHandler handler;
 	//首页商品查询
@@ -101,50 +107,84 @@ public class ProductController {
 			    return js;
 		}
 		
-		 //商品详情查询
-		@RequestMapping(value = "/auction", method = RequestMethod.POST)
-		public @ResponseBody JSONObject auction(@RequestParam int good_id) {
-			    Map<String, Object> map= new HashMap<String, Object>();
-			    Product product = productManager.findProductById(good_id);
-			    System.out.println(product);
-			    System.out.println(product.getAuction());
-			    //System.out.println(product.getAuction().getAuctionName());
-			    map.put("id", product.getpId());
-			    map.put("sid", product.getsId());
-			    map.put("title", product.getpName());
-			    map.put("url_list", product.getMediaMain());
-		    	map.put("detail_url", product.getMediaDetail());
-		    	map.put("market_price", product.getpMarketPrice());
-		    	map.put("repertory", product.getpNum());
-			    //开始拍卖的时间
-			    map.put("start_time", product.getSaleTime());   
-			    map.put("auction_id", product.getAuction().getId());
-		    	map.put("action_pv", product.getAuction().getAutionPv());
-		    	map.put("auction_person", product.getAuction().getAuctionName());
-		    	map.put("auction_time", product.getAuction().getAuctionTime());
-		    	map.put("auction_price", product.getAuction().getAuctionPrice());
-		    	map.put("status", product.getAuction().getStatus());//正在竞拍，竞拍结束
-		    	System.out.println(product.getAuction().getAuctionName());
+		//竞拍
+		@RequestMapping(value = "/auctionGood", method = RequestMethod.GET)
+		 public @ResponseBody JSONObject auctionGood(HttpServletRequest request) {
+			//@RequestParam int uid,
+			//@RequestParam String openid, @RequestParam int good_id
+			Map<String, Object> map= new HashMap<String, Object>();
+			   int auction_pv=0;
+			   Date auctionTime;
+			   double auctionPrice = Double.parseDouble(request.getParameter("auctionPrice"));
+			   int pid=Integer.parseInt(request.getParameter("good_id"));
+			   Product product1 = this.findProduct(pid);
+			    Product product = new Product();
+			    Auction auction = new Auction();
+			    if(request.getParameter("good_id")!=null) {
+			    	 auction_pv++;
+			    	 auctionPrice=auctionPrice*1.1;
+			    	 auctionTime = new Date();
+			    }
+			    System.out.println("auction_pv:"+auction_pv);
+			    if(auction_pv==1) {
+			    	
+				    auction.setpId(Integer.parseInt(request.getParameter("good_id")));
+				    auction.setuId(Integer.parseInt(request.getParameter("uid")));
+				    auction.setAutionPv(auction_pv);
+				    auction.setAuctionPrice((float)auctionPrice);
+				    //竞拍中
+				    auction.setStatus(Integer.parseInt(request.getParameter("status")));
+				    auction.setAuctionName(request.getParameter("auctionName"));
+				    auction.setpPrice(product1.getpMarketPrice());
+				    
+				    auction.setStartTime(product1.getSaleTime());
+				    auction.setCreateTime(new Date());
+				   //System.out.println(productResult);
+				    int i = auctionManager.addAuctionInfo(auction);
+				    //Product product2 = productManager.findProductById(pid);
+				   if(i==1) {
+					   map.put("ret",1);
+					   map.put("msg", "出价成功");
+					   
+				   }else {
+					   map.put("ret",0);
+					   map.put("msg", "出价失败");
+				   }
+			    }else if(auction_pv>1) {
+			    	auction.setuId(Integer.parseInt(request.getParameter("uid")));
+			    	int uid = Integer.parseInt(request.getParameter("uid"));
+			    	User user = userManager.findUserByUid(uid);
+			    	auction.setpId(Integer.parseInt(request.getParameter("good_id")));
+			    	auction.setAuctionName(user.getNicknae());
+			    	auction.setAuctionPrice((float)auctionPrice);
+			    	auction.setAuctionTime(new Date());
+			    	int i = auctionManager.modifyAuctionInfo(auction);
+			    	if(i==1) {
+						   map.put("ret",1);
+						   map.put("msg", "出价成功");
+						   
+					   }else {
+						   map.put("ret",0);
+						   map.put("msg", "出价失败");
+					   }
+			    }
 			    
-			    /*handler.sendMessageToUsers(new TextMessage(map.toString()));*/
-				JSONObject js = JSONObject.fromObject(map);
+			   JSONObject js = JSONObject.fromObject(map);
 			    return js;
 		}
 		
-		//竞拍
-		@RequestMapping(value = "/auctionGood", method = RequestMethod.GET)
-		 public @ResponseBody JSONObject modifyProduct(@RequestParam int id,@RequestParam int status) {
-			    Product product = new Product();
-			    //如果到拍卖时间
-			    product.setStatus(status);
-			    product.setpId(id);
-			    productManager.modifyProductInfo(product);
-			    Product productResult = productManager.findProductById(id);
-			   //System.out.println(productResult);
-			    JSONObject jsArray = new JSONObject();
-			    jsArray.element("id", productResult.getpId());
-			    jsArray.element("status", productResult.getStatus());
-			    return jsArray;
+		/*public int countAuctionPv() {
+			int i=0;
+			return i;
+		}*/
+		
+		public Product findProduct(int pid) {
+			Product product = productManager.findProductById(pid);
+			return product;
+		}
+		public User findUser(int uid ) {
+			User user = userManager.findUserByUid(uid);
+			return user;
 		}
 		 //根据关键词搜索商品
 		@RequestMapping(value = "/search_goods", method = RequestMethod.GET)
@@ -165,6 +205,76 @@ public class ProductController {
 			    jsArray.add(map);
 			    return jsArray;
 		}
+		
+		        //商品下架
+				@RequestMapping(value = "/deleteGoods", method = RequestMethod.GET)
+				public @ResponseBody JSONObject findGoodsByName(@RequestParam int sid,
+						@RequestParam int pid) {
+					Map<String, Object> map= new HashMap<String, Object>();
+					   //System.out.println(productList);
+					   int i = productManager.deleteProductById(pid);
+					   if(i==1) {
+						  map.put("ret", i);
+						  map.put("msg", "下架成功");
+					   }else {
+						   map.put("ret", i);
+						   map.put("msg", "下架失败");
+					   }
+					    JSONObject js = JSONObject.fromObject(map);
+					   
+					    return js;
+				}
+				//商品删除
+				@RequestMapping(value = "/changeGoodsStatus", method = RequestMethod.GET)
+				public @ResponseBody JSONObject changeGoodsStatus(@RequestParam int sid,
+						@RequestParam int status, @RequestParam int pid) {
+					Map<String, Object> map= new HashMap<String, Object>();
+					   //System.out.println(productList);
+					Product product = new Product();
+					product.setStatus(status);
+					product.setpId(pid);
+					   int i = productManager.modifyProductInfo(product);
+					   if(i==1) {
+						  map.put("ret", i);
+						  map.put("msg", "删除成功");
+					   }else {
+						   map.put("ret", i);
+						   map.put("msg", "删除失败");
+					   }
+					    JSONObject js = JSONObject.fromObject(map);
+					   
+					    return js;
+				}
+				
+				 //商品详情查询
+				/*@RequestMapping(value = "/auction", method = RequestMethod.POST)
+				public @ResponseBody JSONObject auction(@RequestParam int good_id) {
+					    Map<String, Object> map= new HashMap<String, Object>();
+					    Product product = productManager.findProductById(good_id);
+					    System.out.println(product);
+					    System.out.println(product.getAuction());
+					    //System.out.println(product.getAuction().getAuctionName());
+					    map.put("id", product.getpId());
+					    map.put("sid", product.getsId());
+					    map.put("title", product.getpName());
+					    map.put("url_list", product.getMediaMain());
+				    	map.put("detail_url", product.getMediaDetail());
+				    	map.put("market_price", product.getpMarketPrice());
+				    	map.put("repertory", product.getpNum());
+					    //开始拍卖的时间
+					    map.put("start_time", product.getSaleTime());   
+					    map.put("auction_id", product.getAuction().getId());
+				    	map.put("action_pv", product.getAuction().getAutionPv());
+				    	map.put("auction_person", product.getAuction().getAuctionName());
+				    	map.put("auction_time", product.getAuction().getAuctionTime());
+				    	map.put("auction_price", product.getAuction().getAuctionPrice());
+				    	map.put("status", product.getAuction().getStatus());//正在竞拍，竞拍结束
+				    	System.out.println(product.getAuction().getAuctionName());
+					    
+					    handler.sendMessageToUsers(new TextMessage(map.toString()));
+						JSONObject js = JSONObject.fromObject(map);
+					    return js;
+				}*/
 		
 		/*//商品添加
 				@RequestMapping(value = "/addProducts", method = RequestMethod.GET)

@@ -35,6 +35,19 @@
     from t_product p, t_auction a
     where p.p_id=a.p_id and p.p_id = #{pId,jdbcType=INTEGER}
   </select>
+  
+  <select id="selectProductsBySaler" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  p_id, s_id, p_name, p_num, p_market_price, p_sale_price, media_main, media_detail, 
+    p_desc, status, sale_time, sale_num, create_tim, modify_time
+    from t_product
+    where s_id=#{sid} and status=#{status} limit #{offset}, #{pageSize}
+  </select>
+  <!-- <select id="selectProductsInStore" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  p_id, s_id, p_name, p_num, p_market_price, p_sale_price, media_main, media_detail, 
+    p_desc, status, sale_time, sale_num, create_tim, modify_time
+    from t_product
+    where s_id=#{sid} and status=10 limit #{offset}, #{pageSize}
+  </select> -->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_product
     where p_id = #{pId,jdbcType=INTEGER}

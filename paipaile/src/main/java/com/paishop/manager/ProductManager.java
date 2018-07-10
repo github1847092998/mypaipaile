@@ -9,17 +9,17 @@ import com.paishop.entity.Product;
 
 public interface ProductManager {
 	//删除商品信息
-	public boolean deleteProductById(Integer id);
+	public int deleteProductById(Integer id);
    //添加商品信息
-	public boolean addProduct(Product product);
+	public int addProduct(Product product);
    //查询商品信息
 	public  Product findProductById(Integer id);
 	//查询商家的产品
-	public  List<Product> findProductsBySaler(Integer id);
+	public  List<Product> findProductsBySaler(Integer sid, int status, int offset, int pageSize);
 	//
 	public  List<Product> findAllProducts(int offset, int pageSize);
     //修改商品信息
-    public void modifyProductInfo(Product product);
+    public int modifyProductInfo(Product product);
     
     public List<Product>findGoodsByName(String keyword, int offset, int pageSize);
 }

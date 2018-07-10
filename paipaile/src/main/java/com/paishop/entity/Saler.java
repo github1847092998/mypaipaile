@@ -1,6 +1,7 @@
 package com.paishop.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class Saler {
     private Integer sId;
@@ -15,6 +16,7 @@ public class Saler {
 
     private Date modifyTime;
 
+  
     public Integer getsId() {
         return sId;
     }
@@ -62,4 +64,9 @@ public class Saler {
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
+    
+    
+    
+    
 }

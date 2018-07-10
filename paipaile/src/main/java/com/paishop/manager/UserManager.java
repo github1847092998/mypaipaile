@@ -8,15 +8,15 @@ import com.paishop.entity.User;
 
 public interface UserManager {
 	//娣诲姞鐢ㄦ埛
-	public boolean addUser(User user);
+	public int addUser(User user);
 	//淇敼鐢ㄦ埛
-	public boolean modifyUser(User user);
+	public int modifyUser(User user);
 /*	//淇敼鐢ㄦ埗鍦板潃
 	public void modifyUserAddress(User user);*/
 	//鍒犻櫎鐢ㄦ埛
-	public void deleteUserById(int userId);
+	public int deleteUserById(int userId);
 	//鏌ヨ涓�涓敤鎴�
-	public User findUserByOpenid(String openid);
+	public User findUserByUid(int uid);
 	//妯＄硦鏌ヨ
 
 }
