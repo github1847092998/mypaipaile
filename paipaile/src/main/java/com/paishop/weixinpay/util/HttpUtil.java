@@ -20,7 +20,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -28,6 +27,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -43,7 +43,14 @@ public class HttpUtil {
 	private BasicCookieStore cookieStore;
 	private HttpGet get;
 	private HttpPost post;
-
+    /**
+     * 
+     * @param requestUrl
+     * @param requestMethod
+     * @param output
+     * @return
+     * @throws IOException
+     */
     public static StringBuffer httpsRequest(String requestUrl, String requestMethod, String output) throws IOException {
         URL url = new URL(requestUrl);
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -56,8 +63,9 @@ public class HttpUtil {
             outputStream.write(output.getBytes("UTF-8"));
             outputStream.close();
         }
-        // 浠庤緭鍏ユ祦璇诲彇杩斿洖鍐呭
+        // 读取字节流
         InputStream inputStream = connection.getInputStream();
+        
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         String str = null;
@@ -73,13 +81,24 @@ public class HttpUtil {
         return buffer;
     }
 
-	
+	/**
+	 * 
+	 * @param url
+	 * @param headers
+	 * @param params
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 * @throws KeyStoreException
+	 * @throws KeyManagementException
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
 	public HttpResult doGet(String url, Map<String, String> headers, Map<String, String> params) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, ClientProtocolException, IOException {
 
 		if (url == null|| url.equals("")) {
 			return null;
 		}
-
+		
 		SSLContextBuilder builder = new SSLContextBuilder();
 		builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
 		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(builder.build());
@@ -116,7 +135,15 @@ public class HttpUtil {
 		return result;
 		
 	}
-
+    /**
+     * 
+     * @param url
+     * @param headers
+     * @param postData
+     * @param encoding
+     * @return
+     * @throws Exception
+     */
 	public HttpResult doPost(String url, Map<String, String> headers, Map<String, String> postData, String encoding) throws Exception {
 
 		if (url == null|| url.equals("")) {
@@ -208,11 +235,12 @@ public class HttpUtil {
 
 	
 	/**
-	 * 涓嬭浇鏂囦欢
-	 * @param url 涓嬭浇鏂囦欢鐨勯摼鎺�
-	 * @param destFile 鍖呭惈璺緞鐨勭洰鏍囨枃浠跺悕
-	 * @param headers 璇锋眰澶�
-	 * @return 
+	 * 
+	 * @param url
+	 * @param destFile
+	 * @param headers
+	 * @return
+	 * @throws Exception
 	 */
 	public HttpResult downloadFile(String url, String destFile, Map<String, String> headers) throws Exception {
 		

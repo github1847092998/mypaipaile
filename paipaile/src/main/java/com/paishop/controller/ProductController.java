@@ -49,6 +49,8 @@ public class ProductController {
 		     //@RequestParam int uId, @RequestParam String openid,
 	        //@RequestParam int offset, @RequestParam int pageSize
 		    Map<String, Object> map= new HashMap<String, Object>(); 
+		    Map<String, Object> goodMap= new HashMap<String, Object>(); 
+		    Map<String, Object> infoMap= new HashMap<String, Object>(); 
 			List<Product> productList = productManager.findAllProducts(offset, pageSize);
 			for (Product product : productList) {
 				    map.put("id", product.getpId());
@@ -59,7 +61,12 @@ public class ProductController {
 				    //库存
 				    map.put("repertory", product.getpNum());
 			}
-			JSONArray jsonArray = JSONArray.fromObject(map);
+			goodMap.put("good_detail", map);
+			goodMap.put("total", productList.size());
+			infoMap.put("data", goodMap);
+			infoMap.put("msg", "成功");
+			infoMap.put("ret", 1);
+			JSONArray jsonArray = JSONArray.fromObject(infoMap);
 		    return jsonArray;
 	}
 	     //商品详情查询
@@ -88,7 +95,7 @@ public class ProductController {
 			    	map.put("status", product.getAuction().getStatus());//正在竞拍，竞拍结束
 			    	System.out.println(product.getAuction().getAuctionName());
 		    	}else {
-		    		map.put("auction", "");
+		    		map.put("auction", "可以收藏");
 		    	}
 		    	
 			    //如果当前商品正在拍卖
@@ -120,7 +127,9 @@ public class ProductController {
 			   Product product1 = this.findProduct(pid);
 			    Product product = new Product();
 			    Auction auction = new Auction();
-			    if(request.getParameter("good_id")!=null) {
+			    
+			    if(request.getRemoteAddr()!=null && !"".equals(request.getRemoteAddr().toString())) {
+			    //if(request.getRequestURL()!=null && !"".equals(request.getRequestURL().toString())) {
 			    	 auction_pv++;
 			    	 auctionPrice=auctionPrice*1.1;
 			    	 auctionTime = new Date();

@@ -43,15 +43,18 @@ public class UserController {
 
 	@Autowired
 	private SalerManager salerManager;
-	@Autowired
-	private AuctionManager auctionManager;
+	
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
-	public @ResponseBody JSONObject addUser(@RequestParam String openid, @RequestParam String unionid,
+	public @ResponseBody JSONObject addUser(@RequestParam String openid, 
 			@RequestParam String nickname, @RequestParam int gender, @RequestParam String area, 
 			@RequestParam String avatar_url,@RequestParam String telephone, 
 			@RequestParam JSONArray detailAddress ) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		if(openid==null || "".equals(openid)) {
+			map.put("ret", 0);
+			map.put("msg", "授权失败");
+		}
 		User user = new User();
         user.setWxOpenid(openid);
         user.setNicknae(nickname);
@@ -63,10 +66,10 @@ public class UserController {
 		int i = userManager.addUser(user);
 		if (i == 1) {
 			map.put("ret", 1);
-			map.put("msg", "添加成功");
+			map.put("msg", "授权成功");
 		} else {
 			map.put("ret", 0);
-			map.put("msg", "添加失败");
+			map.put("msg", "授权失败");
 		}
 		JSONObject js = JSONObject.fromObject(map);
 		return js;
@@ -74,9 +77,9 @@ public class UserController {
 
 	// 个人中心页面
 	@RequestMapping(value = "/findUserAllInfo", method = RequestMethod.GET)
-	public @ResponseBody JSONObject findUserAllInfo(@RequestParam("uid") int uid, @RequestParam("openid") String openid,
-			@RequestParam("oStatus") int oStatus, @RequestParam("offset") int offset,
-			@RequestParam("pageSize") int pageSize) {
+	public @ResponseBody JSONObject findUserAllInfo(@RequestParam("uid") int uid, 
+			@RequestParam("openid") String openid, @RequestParam("oStatus") int oStatus, 
+			@RequestParam("offset") int offset, @RequestParam("pageSize") int pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = userManager.findUserByUid(uid);
 		map.put("nickname", user.getNicknae());
