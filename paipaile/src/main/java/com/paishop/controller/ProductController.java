@@ -8,8 +8,11 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.paishop.entity.Auction;
 import com.paishop.entity.Product;
@@ -41,8 +46,8 @@ public class ProductController {
 	private AuctionManager auctionManager;
 	@Autowired
 	private UserManager userManager;
-	//@Autowired
-	//private MyHandler handler;
+	
+	
 	//首页商品查询
 	@RequestMapping(value = "/getAllGoods", method = RequestMethod.GET)
 	public @ResponseBody JSONArray showIndex(@RequestParam int offset, @RequestParam int pageSize) {
@@ -72,7 +77,7 @@ public class ProductController {
 	     //商品详情查询
 	    //@SendTo
 		@RequestMapping(value = "/getGoodById", method = RequestMethod.GET)
-		public @ResponseBody JSONObject showProductDetail(@RequestParam int good_id) {
+		public @ResponseBody JSONObject showProductDetail(@RequestParam int good_id, HttpServletRequest request) {
 			    Map<String, Object> map= new HashMap<String, Object>();
 			    Product product = productManager.findProductById(good_id);
 			    System.out.println(product);
@@ -109,7 +114,10 @@ public class ProductController {
 			    	map.put("auction_price", auction.getAuctionPrice());
 			    	map.put("status", auction.getStatus());//正在竞拍，竞拍结束
 			    }*/
-			    
+		    
+		    
+		    	
+		    	
 				JSONObject js = JSONObject.fromObject(map);
 			    return js;
 		}

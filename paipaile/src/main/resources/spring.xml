@@ -21,7 +21,9 @@
 	<context:property-placeholder location="classpath:config.properties" />
 
 	<!-- 自动扫描(自动注入) -->
+	<context:annotation-config/>
 	<context:component-scan base-package="com.paishop.manager.impl,com.paishop.websocket" />
 	
+	<!-- <bean id="myHandler" class="com.paishop.websocket.MyHandler"/> -->
 	
 </beans>
